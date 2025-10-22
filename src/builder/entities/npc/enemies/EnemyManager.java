@@ -63,6 +63,7 @@ public class EnemyManager implements Tickable, Interactable, RenderableGroup {
      */
     public Magpie mkM(Player player) {
         final Magpie magpie = new Magpie(this.spawnX, this.spawnY, player);
+        this.Birds.add(magpie);
         return magpie;
     }
 
