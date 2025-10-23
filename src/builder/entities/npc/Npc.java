@@ -26,23 +26,45 @@ public class Npc extends Entity implements Interactable, Tickable, Directable {
         super(x, y);
     }
 
+    /**
+     * Gets the current speed of this NPC.
+     *
+     * @return the speed value
+     */
     public double getSpeed() {
         return speed;
     }
 
+    /**
+     * Sets the speed of this NPC.
+     *
+     * @param speed the new speed value
+     */
     public void setSpeed(int speed) {
         this.speed = speed;
     }
 
+    /**
+     * Gets the current direction of this NPC.
+     *
+     * @return the direction in degrees
+     */
     public int getDirection() {
         return this.direction;
     }
 
+    /**
+     * Sets the direction of this NPC.
+     *
+     * @param direction the new direction in degrees
+     */
     public void setDirection(int direction) {
         this.direction = direction;
     }
 
-    /** Adjust the X and Y of {@link Npc} */
+    /**
+     * Adjusts the X and Y coordinates of this NPC based on direction and speed.
+     */
     public void move() {
         final int deltaX = (int) Math.round(Math.cos(Math.toRadians(this.direction)) * this.speed);
         final int deltaY = (int) Math.round(Math.sin(Math.toRadians(this.direction)) * this.speed);
@@ -78,13 +100,13 @@ public class Npc extends Entity implements Interactable, Tickable, Directable {
     /**
      * Return how far away this npc is from the given position
      *
-     * @param xCoordinate - x coordinate
-     * @param yCoordinate - y coordinate
+     * @param x - x coordinate
+     * @param y - y coordinate
      * @return integer representation for how far apart they are
      */
-    public int distanceFrom(int xCoordinate, int yCoordinate) {
-        int deltaX = xCoordinate - this.getX();
-        int deltaY = yCoordinate - this.getY();
+    public int distanceFrom(int x, int y) {
+        int deltaX = x - this.getX();
+        int deltaY = y - this.getY();
         return (int) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 }

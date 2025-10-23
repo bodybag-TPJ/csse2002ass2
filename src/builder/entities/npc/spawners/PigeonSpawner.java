@@ -12,21 +12,37 @@ import engine.timing.TickTimer;
 
 import java.util.List;
 
+/**
+ * A spawner that creates Pigeon entities when cabbages are present.
+ */
 public class PigeonSpawner implements Spawner {
 
-    private int x = 0;
-    private int y = 0;
+    private int xPos = 0;
+    private int yPos = 0;
     private final RepeatingTimer timer;
 
+    /**
+     * Constructs a PigeonSpawner with default duration.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     */
     public PigeonSpawner(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.xPos = x;
+        this.yPos = y;
         this.timer = new RepeatingTimer(100);
     }
 
+    /**
+     * Constructs a PigeonSpawner with custom duration.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param duration the timer duration
+     */
     public PigeonSpawner(int x, int y, int duration) {
-        this.x = x;
-        this.y = y;
+        this.xPos = x;
+        this.yPos = y;
         this.timer = new RepeatingTimer(duration);
     }
 
@@ -83,21 +99,21 @@ public class PigeonSpawner implements Spawner {
 
     @Override
     public int getX() {
-        return this.x;
+        return this.xPos;
     }
 
     @Override
     public void setX(int x) {
-        this.x = x;
+        this.xPos = x;
     }
 
     @Override
     public int getY() {
-        return this.y;
+        return this.yPos;
     }
 
     @Override
     public void setY(int y) {
-        this.y = y;
+        this.yPos = y;
     }
 }

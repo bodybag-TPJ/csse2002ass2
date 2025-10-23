@@ -9,16 +9,26 @@ import engine.art.sprites.SpriteGroup;
 import engine.game.HasPosition;
 import engine.timing.FixedTimer;
 
+/**
+ * An eagle enemy that steals food from the player.
+ */
 public class Eagle extends Enemy implements Expirable {
 
     private static final SpriteGroup art = SpriteGallery.eagle;
     private FixedTimer lifespan = new FixedTimer(5000);
-    public HasPosition trackedTarget;
+    private HasPosition trackedTarget;
     private boolean attacking = true;
     private int spawnX = 0;
     private int spawnY = 0;
     private int food = 0;
 
+    /**
+     * Constructs an Eagle at the specified position with a target.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param trackedTarget the target to track
+     */
     public Eagle(int x, int y, HasPosition trackedTarget) {
         super(x, y);
         this.spawnX = x;
@@ -51,6 +61,15 @@ public class Eagle extends Enemy implements Expirable {
     @Override
     public void setLifespan(FixedTimer timer) {
         this.lifespan = timer;
+    }
+
+    /**
+     * Gets the tracked target.
+     *
+     * @return the tracked target
+     */
+    public HasPosition getTrackedTarget() {
+        return trackedTarget;
     }
 
     @Override

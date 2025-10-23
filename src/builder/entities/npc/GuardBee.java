@@ -23,17 +23,19 @@ public class GuardBee extends Npc implements Expirable {
     private final HasPosition trackedTarget;
 
     /**
-     * @param xCoordinate horizontal spawning position
-     * @param yCoordinate vertical spawning position
+     * Constructs a GuardBee at the specified coordinates.
+     *
+     * @param x horizontal spawning position
+     * @param y vertical spawning position
      * @param trackedTarget target with a position we want this to track
      */
-    public GuardBee(int xCoordinate, int yCoordinate, HasPosition trackedTarget) {
-        super(xCoordinate, yCoordinate);
+    public GuardBee(int x, int y, HasPosition trackedTarget) {
+        super(x, y);
         this.setSprite(art.getSprite("default"));
         this.trackedTarget = trackedTarget;
 
-        this.spawnX = xCoordinate;
-        this.spawnY = yCoordinate;
+        this.spawnX = x;
+        this.spawnY = y;
 
         double deltaX = trackedTarget.getX() - this.getX();
         double deltaY = trackedTarget.getY() - this.getY();
@@ -51,6 +53,9 @@ public class GuardBee extends Npc implements Expirable {
         this.lifespan = timer;
     }
 
+    /**
+     * Updates the sprite based on the current direction of movement.
+     */
     public void updateArtBasedOnDirection() {
         boolean goingUp = (this.getDirection() >= 230 && this.getDirection() < 310);
         boolean goingDown = (this.getDirection() >= 40 && this.getDirection() < 140);

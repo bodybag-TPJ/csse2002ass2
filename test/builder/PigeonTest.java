@@ -16,7 +16,7 @@ public class PigeonTest {
         Assert.assertEquals("X coordinate should be set correctly", 50, testPigeon.getX());
         Assert.assertEquals("Y coordinate should be set correctly", 75, testPigeon.getY());
         Assert.assertNotNull("Lifespan should be initialized", testPigeon.getLifespan());
-        Assert.assertTrue("Should be attacking initially", testPigeon.attacking);
+        Assert.assertTrue("Should be attacking initially", testPigeon.getAttacking());
         Assert.assertNotNull("Sprite should be set", testPigeon.getSprite());
     }
 
@@ -27,7 +27,7 @@ public class PigeonTest {
         Assert.assertEquals("X coordinate should be set correctly", 80, testPigeon.getX());
         Assert.assertEquals("Y coordinate should be set correctly", 90, testPigeon.getY());
         Assert.assertNotNull("Lifespan should be initialized", testPigeon.getLifespan());
-        Assert.assertTrue("Should be attacking initially", testPigeon.attacking);
+        Assert.assertTrue("Should be attacking initially", testPigeon.getAttacking());
         Assert.assertNotNull("Sprite should be set", testPigeon.getSprite());
     }
 
@@ -49,7 +49,7 @@ public class PigeonTest {
     @Test
     public void testTickNotAttackingReturningToSpawn() {
         Pigeon pigeon = new Pigeon(100, 200);
-        pigeon.attacking = false;
+        pigeon.setAttacking(false);
         
         MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
         TestGameState game = new TestGameState();
@@ -61,7 +61,7 @@ public class PigeonTest {
     @Test
     public void testTickAttackingNoTargetLeftSide() {
         Pigeon pigeon = new Pigeon(300, 500);
-        pigeon.attacking = true;
+        pigeon.setAttacking(true);
         
         MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
         TestGameState game = new TestGameState();
@@ -73,7 +73,7 @@ public class PigeonTest {
     @Test
     public void testTickAttackingNoTargetRightSide() {
         Pigeon pigeon = new Pigeon(500, 500);
-        pigeon.attacking = true;
+        pigeon.setAttacking(true);
         
         MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
         TestGameState game = new TestGameState();
@@ -86,7 +86,7 @@ public class PigeonTest {
     public void testTickWithTrackedTarget() {
         TestHasPosition target = new TestHasPosition(300, 400);
         Pigeon pigeon = new Pigeon(100, 200, target);
-        pigeon.attacking = true;
+        pigeon.setAttacking(true);
         
         MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
         TestGameState game = new TestGameState();
@@ -113,7 +113,7 @@ public class PigeonTest {
     @Test
     public void testTickNotAttackingCloseToSpawn() {
         Pigeon pigeon = new Pigeon(100, 200);
-        pigeon.attacking = false;
+        pigeon.setAttacking(false);
         pigeon.setX(100);
         pigeon.setY(200);
         
@@ -127,7 +127,7 @@ public class PigeonTest {
     @Test
     public void testTickNotAttackingFarFromSpawn() {
         Pigeon pigeon = new Pigeon(100, 200);
-        pigeon.attacking = false;
+        pigeon.setAttacking(false);
         pigeon.setX(500);
         pigeon.setY(600);
         
@@ -141,7 +141,7 @@ public class PigeonTest {
     @Test
     public void testTickWithCabbageOnTile() {
         Pigeon pigeon = new Pigeon(100, 200);
-        pigeon.attacking = true;
+        pigeon.setAttacking(true);
         
         MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
         TestGameState game = new TestGameState();
@@ -158,7 +158,7 @@ public class PigeonTest {
     @Test
     public void testTickSpriteChangeSpawnAbove() {
         Pigeon pigeon = new Pigeon(100, 50);
-        pigeon.attacking = false;
+        pigeon.setAttacking(false);
         pigeon.setX(100);
         pigeon.setY(100);
         
@@ -172,7 +172,7 @@ public class PigeonTest {
     @Test
     public void testTickSpriteChangeSpawnBelow() {
         Pigeon pigeon = new Pigeon(100, 200);
-        pigeon.attacking = false;
+        pigeon.setAttacking(false);
         pigeon.setX(100);
         pigeon.setY(100);
         
@@ -186,7 +186,7 @@ public class PigeonTest {
     @Test
     public void testTickTargetNullAttackingLeftBranch() {
         Pigeon pigeon = new Pigeon(350, 800);
-        pigeon.attacking = true;
+        pigeon.setAttacking(true);
         
         MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
         TestGameState game = new TestGameState();
@@ -198,7 +198,7 @@ public class PigeonTest {
     @Test
     public void testTickTargetNullAttackingRightBranch() {
         Pigeon pigeon = new Pigeon(450, 800);
-        pigeon.attacking = true;
+        pigeon.setAttacking(true);
         
         MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
         TestGameState game = new TestGameState();
@@ -223,7 +223,7 @@ public class PigeonTest {
     @Test
     public void testTickCabbageNearby() {
         Pigeon pigeon = new Pigeon(100, 100);
-        pigeon.attacking = true;
+        pigeon.setAttacking(true);
         
         MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
         TestGameState game = new TestGameState();
@@ -250,13 +250,13 @@ public class PigeonTest {
     @Test
     public void testTickNoCabbages() {
         Pigeon pigeon = new Pigeon(100, 200);
-        pigeon.attacking = true;
+        pigeon.setAttacking(true);
         
         MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
         TestGameState game = new TestGameState();
         
         pigeon.tick(engine, game);
-        Assert.assertTrue("Should process tick with no cabbages", !pigeon.attacking || pigeon.attacking);
+        Assert.assertTrue("Should process tick with no cabbages", !pigeon.getAttacking() || pigeon.getAttacking());
     }
 
     public static class TestHasPosition implements engine.game.HasPosition {

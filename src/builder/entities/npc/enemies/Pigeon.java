@@ -14,15 +14,24 @@ import engine.timing.FixedTimer;
 
 import java.util.List;
 
+/**
+ * A pigeon enemy that attacks cabbages and can return to spawn point.
+ */
 public class Pigeon extends Enemy implements Expirable {
 
     private static final SpriteGroup art = SpriteGallery.pigeon;
     private FixedTimer lifespan = new FixedTimer(3000);
     private HasPosition trackedTarget;
-    public Boolean attacking = true;
+    private Boolean attacking = true;
     private int spawnX = 0;
     private int spawnY = 0;
 
+    /**
+     * Constructs a Pigeon at the specified coordinates.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     */
     public Pigeon(int x, int y) {
         super(x, y);
         this.spawnX = x;
@@ -31,6 +40,13 @@ public class Pigeon extends Enemy implements Expirable {
         this.setSprite(art.getSprite("down"));
     }
 
+    /**
+     * Constructs a Pigeon with a tracked target.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param trackedTarget the target to track
+     */
     public Pigeon(int x, int y, HasPosition trackedTarget) {
         super(x, y);
         this.spawnX = x;
@@ -48,6 +64,24 @@ public class Pigeon extends Enemy implements Expirable {
     @Override
     public void setLifespan(FixedTimer timer) {
         this.lifespan = timer;
+    }
+
+    /**
+     * Gets the attacking state.
+     *
+     * @return true if attacking
+     */
+    public Boolean getAttacking() {
+        return attacking;
+    }
+
+    /**
+     * Sets the attacking state.
+     *
+     * @param attacking the new attacking state
+     */
+    public void setAttacking(Boolean attacking) {
+        this.attacking = attacking;
     }
 
     @Override
@@ -70,7 +104,8 @@ public class Pigeon extends Enemy implements Expirable {
         }
         
         if (this.trackedTarget == null && this.attacking) { 
-            double deltaX, deltaY;
+            double deltaX;
+            double deltaY;
             if (this.getX() < 400) {
                 deltaX = (450 - this.getX());
                 deltaY = (900 - this.getY());

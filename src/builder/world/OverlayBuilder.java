@@ -13,9 +13,11 @@ import java.util.List;
 public class OverlayBuilder {
 
     /**
-     * @param filepath - location of the text file we wish to load
-     * @return String representation of the contents of file found at the filepath.
-     * @throws IOException
+     * Loads the contents of a details file.
+     *
+     * @param filepath location of the text file we wish to load
+     * @return String representation of the contents of file found at the filepath
+     * @throws IOException if file cannot be read
      */
     private static String load(String filepath) throws IOException {
         if (!filepath.endsWith(".details")) {
@@ -52,8 +54,10 @@ public class OverlayBuilder {
     }
 
     /**
-     * @param line line to process.
-     * @return a new {@link SpawnerDetails} holding the information extracted from the line.
+     * Extracts spawner details from a line of text.
+     *
+     * @param line line to process
+     * @return a new SpawnerDetails holding the information extracted from the line
      */
     public static SpawnerDetails extractSpawnDetailsFromLine(String line) {
         String[] chunks = line.split(" ");
@@ -101,6 +105,13 @@ public class OverlayBuilder {
         };
     }
 
+    /**
+     * Extracts eagle spawner details from the details content.
+     *
+     * @param detailsContent the content to parse
+     * @return list of spawner details
+     * @throws IOException if section cannot be found
+     */
     public static List<SpawnerDetails> getEagleSpawnDetailsFromString(String detailsContent)
             throws IOException {
         List<String> section = OverlayBuilder.getSection("eaglespawner", detailsContent);
@@ -111,6 +122,13 @@ public class OverlayBuilder {
         return list;
     }
 
+    /**
+     * Extracts pigeon spawner details from the details content.
+     *
+     * @param detailsContent the content to parse
+     * @return list of spawner details
+     * @throws IOException if section cannot be found
+     */
     public static List<SpawnerDetails> getPigeonSpawnDetailsFromString(String detailsContent)
             throws IOException {
         List<String> section = OverlayBuilder.getSection("pigeonspawner", detailsContent);
@@ -121,6 +139,13 @@ public class OverlayBuilder {
         return list;
     }
 
+    /**
+     * Extracts magpie spawner details from the details content.
+     *
+     * @param detailsContent the content to parse
+     * @return list of spawner details
+     * @throws IOException if section cannot be found
+     */
     public static List<SpawnerDetails> getMagpieSpawnDetailsFromString(String detailsContent)
             throws IOException {
         List<String> section = OverlayBuilder.getSection("magpiespawner", detailsContent);
@@ -131,9 +156,15 @@ public class OverlayBuilder {
         return list;
     }
 
+    /**
+     * Extracts player details from a line of text.
+     *
+     * @param line the line to parse
+     * @return player details object
+     */
     public static PlayerDetails extractPlayerDetailsFromLine(String line) {
         String[] chunks = line.split(" ");
-        assert chunks.length == 4; // should always be 3 chunks in a correctly shaped line.
+        assert chunks.length == 4; // should always be 4 chunks in a correctly shaped line.
         String[] xChunk = chunks[0].split(":");
         String[] yChunk = chunks[1].split(":");
         String[] coinChunk = chunks[2].split(":");
@@ -180,6 +211,13 @@ public class OverlayBuilder {
         };
     }
 
+    /**
+     * Gets player details from the details content.
+     *
+     * @param detailsContent the content to parse
+     * @return player details object
+     * @throws IOException if section cannot be found
+     */
     public static PlayerDetails getPlayerDetailsFromFile(String detailsContent) throws IOException {
         List<String> section = OverlayBuilder.getSection("chickenFarmer", detailsContent);
         assert section.size()
@@ -188,6 +226,13 @@ public class OverlayBuilder {
         return OverlayBuilder.extractPlayerDetailsFromLine(entry);
     }
 
+    /**
+     * Extracts cabbage spawn details from the details content.
+     *
+     * @param detailsContent the content to parse
+     * @return list of cabbage details
+     * @throws IOException if section cannot be found
+     */
     public static List<CabbageDetails> getCabbageSpawnDetailsFromString(String detailsContent)
             throws IOException {
         final List<String> section = OverlayBuilder.getSection("cabbages", detailsContent);
@@ -198,6 +243,12 @@ public class OverlayBuilder {
         return list;
     }
 
+    /**
+     * Extracts cabbage details from a line of text.
+     *
+     * @param line the line to parse
+     * @return cabbage details object
+     */
     private static CabbageDetails extractCabbageDetailsFromLine(String line) {
         final String[] chunks = line.split(" ");
         String[] xChunk = chunks[0].split(":");

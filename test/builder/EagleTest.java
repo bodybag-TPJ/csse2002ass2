@@ -16,8 +16,8 @@ public class EagleTest {
         Assert.assertEquals("X coordinate should be set correctly", 100, eagle.getX());
         Assert.assertEquals("Y coordinate should be set correctly", 200, eagle.getY());
         Assert.assertNotNull("Lifespan should be initialized", eagle.getLifespan());
-        Assert.assertNotNull("Tracked target should be set", eagle.trackedTarget);
-        Assert.assertEquals("Tracked target should match", target, eagle.trackedTarget);
+        Assert.assertNotNull("Tracked target should be set", eagle.getTrackedTarget());
+        Assert.assertEquals("Tracked target should match", target, eagle.getTrackedTarget());
         Assert.assertNotNull("Sprite should be set", eagle.getSprite());
     }
 

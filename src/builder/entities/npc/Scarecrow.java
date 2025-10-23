@@ -12,11 +12,20 @@ import engine.art.sprites.SpriteGroup;
 
 import java.util.ArrayList;
 
+/**
+ * A scarecrow NPC that scares away birds.
+ */
 public class Scarecrow extends Npc {
 
     public static final int COIN_COST = 2;
     private static final SpriteGroup art = SpriteGallery.scarecrow;
 
+    /**
+     * Constructs a Scarecrow at the specified position.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     */
     public Scarecrow(int x, int y) {
         super(x, y);
         this.setSprite(art.getSprite("default"));
@@ -47,14 +56,14 @@ public class Scarecrow extends Npc {
 
         for (Magpie magpie : magpies) {
             if (this.distanceFrom(magpie) < scareRadius) {
-                magpie.attacking = false;
+                magpie.setAttacking(false);
                 // trigger the scare animation
             }
         }
 
         for (Pigeon pigeon : pigeons) {
             if (this.distanceFrom(pigeon) > scareRadius) {
-                pigeon.attacking = false;
+                pigeon.setAttacking(false);
                 // trigger the scare animation
             }
         }

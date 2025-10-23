@@ -13,6 +13,11 @@ import engine.timing.TickTimer;
  */
 public interface Spawner extends HasPosition, Tickable {
 
+    /**
+     * Gets the timer for this spawner.
+     *
+     * @return the tick timer
+     */
     public TickTimer getTimer();
 
     @Override

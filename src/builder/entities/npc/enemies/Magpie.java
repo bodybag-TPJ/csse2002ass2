@@ -11,23 +11,33 @@ import engine.game.HasPosition;
 import engine.timing.FixedTimer;
 import engine.timing.RepeatingTimer;
 
+/**
+ * A magpie enemy that steals coins from the player.
+ */
 public class Magpie extends Enemy implements Expirable {
 
     private static final SpriteGroup art = SpriteGallery.magpie;
     private FixedTimer lifespan = new FixedTimer(10000);
-    public HasPosition trackedTarget;
-    public Boolean attacking;
-    public int coins = 0;
+    private HasPosition trackedTarget;
+    private Boolean attacking;
+    private int coins = 0;
 
     private RepeatingTimer directionalUpdateTimer = new RepeatingTimer(30);
 
     private final int spawnX;
     private final int spawnY;
 
-    public Magpie(int xCoordinate, int yCoordinate, HasPosition trackedTarget) {
-        super(xCoordinate, yCoordinate);
-        this.spawnX = xCoordinate;
-        this.spawnY = yCoordinate;
+    /**
+     * Constructs a Magpie at the specified position with a target.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param trackedTarget the target to track
+     */
+    public Magpie(int x, int y, HasPosition trackedTarget) {
+        super(x, y);
+        this.spawnX = x;
+        this.spawnY = y;
         this.trackedTarget = trackedTarget;
         this.setSprite(art.getSprite("down"));
         this.setSpeed(3);
@@ -44,6 +54,24 @@ public class Magpie extends Enemy implements Expirable {
         this.lifespan = timer;
     }
 
+    /**
+     * Gets the attacking state.
+     *
+     * @return true if attacking
+     */
+    public Boolean getAttacking() {
+        return attacking;
+    }
+
+    /**
+     * Sets the attacking state.
+     *
+     * @param attacking the new attacking state
+     */
+    public void setAttacking(Boolean attacking) {
+        this.attacking = attacking;
+    }
+
     @Override
     public void tick(EngineState engine, GameState game) {
         super.tick(engine, game);
@@ -55,7 +83,7 @@ public class Magpie extends Enemy implements Expirable {
             double deltaX = trackedTarget.getX() - this.getX();
             double deltaY = trackedTarget.getY() - this.getY();
             this.setDirection((int) Math.toDegrees(Math.atan2(deltaY, deltaX)));
-            /** target is below */
+            // target is below
             if (trackedTarget.getY() > this.getY()) {
                 this.setSprite(art.getSprite("down"));
             } else {
