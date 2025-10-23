@@ -11,8 +11,8 @@ import engine.timing.TickTimer;
  */
 public class MagpieSpawner implements Spawner {
 
-    private int xPos = 0;
-    private int yPos = 0;
+    private int x0 = 0;
+    private int y0 = 0;
     private TickTimer timer;
 
     /**
@@ -22,8 +22,8 @@ public class MagpieSpawner implements Spawner {
      * @param y the y coordinate
      */
     public MagpieSpawner(int x, int y) {
-        this.xPos = x;
-        this.yPos = y;
+        this.x0 = x;
+        this.y0 = y;
         this.timer = new RepeatingTimer(360);
     }
 
@@ -35,8 +35,8 @@ public class MagpieSpawner implements Spawner {
      * @param duration the timer duration
      */
     public MagpieSpawner(int x, int y, int duration) {
-        this.xPos = x;
-        this.yPos = y;
+        this.x0 = x;
+        this.y0 = y;
         this.timer = new RepeatingTimer(duration);
     }
 
@@ -57,21 +57,21 @@ public class MagpieSpawner implements Spawner {
 
     @Override
     public int getX() {
-        return this.xPos;
+        return this.x0;
     }
 
     @Override
     public void setX(int x) {
-        this.xPos = x;
+        this.x0 = x;
     }
 
     @Override
     public int getY() {
-        return this.yPos;
+        return this.y0;
     }
 
     @Override
     public void setY(int y) {
-        this.yPos = y;
+        this.y0 = y;
     }
 }

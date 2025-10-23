@@ -96,25 +96,19 @@ public class BeeHiveTest {
         
         // First interact spawns bee and sets loaded = false
         hive.interact(engine, game);
+        Assert.assertEquals("First interact should spawn 1 bee", 1, game.npcs.npcs.size());
         
-        // Call interact TIMER-1 more times (timer needs TIMER ticks to finish)
+        // Call interact TIMER-1 more times (total TIMER ticks to finish timer)
         for (int i = 0; i < BeeHive.TIMER - 1; i++) {
             hive.interact(engine, game);
         }
         
-        // Timer should not have finished yet, so should not reload
-        hive.interact(engine, game);
-        int countBeforeReload = game.npcs.npcs.size();
-        
-        // One more interact should complete the timer cycle
+        // After TIMER ticks, timer should have finished and reloaded (loaded=true)
+        // Next interact should spawn another bee
         hive.interact(engine, game);
         
-        // After timer finishes, should be able to spawn again
-        hive.interact(engine, game);
-        int countAfterReload = game.npcs.npcs.size();
-        
-        // If timer.tick() was never called, timer would never finish and reload
-        Assert.assertTrue("Timer progression should allow reload", countAfterReload > countBeforeReload);
+        // If timer.tick() was called correctly, we should have 2 bees now
+        Assert.assertEquals("After timer completes, should spawn another bee", 2, game.npcs.npcs.size());
     }
 
     @Test
@@ -302,19 +296,20 @@ public class BeeHiveTest {
         TestEnemy enemy = new TestEnemy(150, 250);
         game.enemies.Birds.add(enemy);
         
-        // First interact: spawns bee, sets loaded = false
+        // First interact: spawns bee, sets loaded = false, timer ticks 1 time
         hive.interact(engine, game);
         
         // Second interact immediately: should not spawn (loaded = false, timer not finished)
         Npc secondBee = hive.checkAndSpawnBee(game.enemies.Birds);
         Assert.assertNull("Should not spawn when not loaded", secondBee);
         
-        // Tick timer TIMER times to finish it
-        for (int i = 0; i < BeeHive.TIMER; i++) {
+        // Tick timer TIMER-1 more times to finish it (total TIMER ticks)
+        for (int i = 0; i < BeeHive.TIMER - 1; i++) {
             hive.interact(engine, game);
         }
         
-        // Now should be able to spawn again (timer finished, loaded = true)
+        // After TIMER total ticks, timer finished and loaded = true
+        // Now should be able to spawn again
         Npc thirdBee = hive.checkAndSpawnBee(game.enemies.Birds);
         Assert.assertNotNull("Should spawn again after timer finishes", thirdBee);
     }

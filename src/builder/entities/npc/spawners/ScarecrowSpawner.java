@@ -12,8 +12,8 @@ import engine.timing.TickTimer;
  */
 public class ScarecrowSpawner implements Spawner {
 
-    private int xPos = 0;
-    private int yPos = 0;
+    private int x0 = 0;
+    private int y0 = 0;
     private RepeatingTimer timer = new RepeatingTimer(300);
 
     /**
@@ -23,8 +23,8 @@ public class ScarecrowSpawner implements Spawner {
      * @param y the y coordinate
      */
     public ScarecrowSpawner(int x, int y) {
-        this.xPos = x;
-        this.yPos = y;
+        this.x0 = x;
+        this.y0 = y;
     }
 
     @Override
@@ -44,21 +44,21 @@ public class ScarecrowSpawner implements Spawner {
 
     @Override
     public int getX() {
-        return this.xPos;
+        return this.x0;
     }
 
     @Override
     public void setX(int x) {
-        this.xPos = x;
+        this.x0 = x;
     }
 
     @Override
     public int getY() {
-        return this.yPos;
+        return this.y0;
     }
 
     @Override
     public void setY(int y) {
-        this.yPos = y;
+        this.y0 = y;
     }
 }

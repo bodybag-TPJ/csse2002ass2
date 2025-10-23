@@ -12,9 +12,9 @@ import engine.timing.TickTimer;
  */
 public class BeeHiveSpawner implements Spawner {
 
-    RepeatingTimer timer;
-    private int xPos = 0;
-    private int yPos = 0;
+    private RepeatingTimer timer;
+    private int x0 = 0;
+    private int y0 = 0;
 
     /**
      * Constructs a BeeHiveSpawner at the specified position.
@@ -24,8 +24,8 @@ public class BeeHiveSpawner implements Spawner {
      * @param duration the timer duration
      */
     public BeeHiveSpawner(int x, int y, int duration) {
-        this.xPos = x;
-        this.yPos = y;
+        this.x0 = x;
+        this.y0 = y;
         this.timer = new RepeatingTimer(300);
     }
 
@@ -50,21 +50,21 @@ public class BeeHiveSpawner implements Spawner {
 
     @Override
     public int getX() {
-        return this.xPos;
+        return this.x0;
     }
 
     @Override
     public void setX(int x) {
-        this.xPos = x;
+        this.x0 = x;
     }
 
     @Override
     public int getY() {
-        return this.yPos;
+        return this.y0;
     }
 
     @Override
     public void setY(int y) {
-        this.yPos = y;
+        this.y0 = y;
     }
 }

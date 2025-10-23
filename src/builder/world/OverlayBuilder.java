@@ -32,7 +32,7 @@ public class OverlayBuilder {
      *
      * @param label label we are searching for
      * @param contents file contents we are searching through
-     * @return a {@link ArrayList<String>} of lines within the searched for section.
+     * @return a List of lines within the searched for section.
      * @throws IOException if the section is not found
      */
     public static List<String> getSection(String label, String contents) throws IOException {
@@ -62,11 +62,11 @@ public class OverlayBuilder {
     public static SpawnerDetails extractSpawnDetailsFromLine(String line) {
         String[] chunks = line.split(" ");
         assert chunks.length == 3; // should always be 3 chunks in a correctly shaped line.
-        String[] xChunk = chunks[0].split(":");
-        String[] yChunk = chunks[1].split(":");
+        String[] xc = chunks[0].split(":");
+        String[] yc = chunks[1].split(":");
         String[] durationChunk = chunks[2].split(":");
-        final int x = Integer.parseInt(xChunk[1]);
-        final int y = Integer.parseInt(yChunk[1]);
+        final int x = Integer.parseInt(xc[1]);
+        final int y = Integer.parseInt(yc[1]);
         final int duration = Integer.parseInt(durationChunk[1]);
         return new SpawnerDetails() {
             @Override
@@ -165,12 +165,12 @@ public class OverlayBuilder {
     public static PlayerDetails extractPlayerDetailsFromLine(String line) {
         String[] chunks = line.split(" ");
         assert chunks.length == 4; // should always be 4 chunks in a correctly shaped line.
-        String[] xChunk = chunks[0].split(":");
-        String[] yChunk = chunks[1].split(":");
+        String[] xc = chunks[0].split(":");
+        String[] yc = chunks[1].split(":");
         String[] coinChunk = chunks[2].split(":");
         String[] foodChunk = chunks[3].split(":");
-        final int x = Integer.parseInt(xChunk[1]);
-        final int y = Integer.parseInt(yChunk[1]);
+        final int x = Integer.parseInt(xc[1]);
+        final int y = Integer.parseInt(yc[1]);
         final int coins = Integer.parseInt(coinChunk[1]);
         final int food = Integer.parseInt(foodChunk[1]);
         return new PlayerDetails() {
@@ -251,10 +251,10 @@ public class OverlayBuilder {
      */
     private static CabbageDetails extractCabbageDetailsFromLine(String line) {
         final String[] chunks = line.split(" ");
-        String[] xChunk = chunks[0].split(":");
-        String[] yChunk = chunks[1].split(":");
-        final int x = Integer.parseInt(xChunk[1]);
-        final int y = Integer.parseInt(yChunk[1]);
+        String[] xc = chunks[0].split(":");
+        String[] yc = chunks[1].split(":");
+        final int x = Integer.parseInt(xc[1]);
+        final int y = Integer.parseInt(yc[1]);
         return new CabbageDetails() {
             @Override
             public int getX() {

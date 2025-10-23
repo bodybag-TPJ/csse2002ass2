@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class PigeonSpawner implements Spawner {
 
-    private int xPos = 0;
-    private int yPos = 0;
+    private int x0 = 0;
+    private int y0 = 0;
     private final RepeatingTimer timer;
 
     /**
@@ -28,8 +28,8 @@ public class PigeonSpawner implements Spawner {
      * @param y the y coordinate
      */
     public PigeonSpawner(int x, int y) {
-        this.xPos = x;
-        this.yPos = y;
+        this.x0 = x;
+        this.y0 = y;
         this.timer = new RepeatingTimer(100);
     }
 
@@ -41,8 +41,8 @@ public class PigeonSpawner implements Spawner {
      * @param duration the timer duration
      */
     public PigeonSpawner(int x, int y, int duration) {
-        this.xPos = x;
-        this.yPos = y;
+        this.x0 = x;
+        this.y0 = y;
         this.timer = new RepeatingTimer(duration);
     }
 
@@ -99,21 +99,21 @@ public class PigeonSpawner implements Spawner {
 
     @Override
     public int getX() {
-        return this.xPos;
+        return this.x0;
     }
 
     @Override
     public void setX(int x) {
-        this.xPos = x;
+        this.x0 = x;
     }
 
     @Override
     public int getY() {
-        return this.yPos;
+        return this.y0;
     }
 
     @Override
     public void setY(int y) {
-        this.yPos = y;
+        this.y0 = y;
     }
 }
