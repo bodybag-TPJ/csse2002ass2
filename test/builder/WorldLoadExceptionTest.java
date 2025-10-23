@@ -197,5 +197,25 @@ public class WorldLoadExceptionTest {
         Assert.assertFalse("Should NOT include character info when col is -1", message.contains("character"));
         Assert.assertEquals("Should use second conditional branch", "Test error on line 6", message);
     }
+
+    @Test
+    public void testConditionalFirstRowCheckWithReflection() throws Exception {
+        // Test for mutation: first row != -1 replaced with true
+        // Create exception with message only (row=-1, col=-1)
+        WorldLoadException exception = new WorldLoadException("Test");
+        
+        // Use reflection to set col to non -1 value while keeping row at -1
+        java.lang.reflect.Field colField = WorldLoadException.class.getDeclaredField("col");
+        colField.setAccessible(true);
+        colField.set(exception, 5);
+        
+        String message = exception.getMessage();
+        
+        // With normal code: row=-1, so first if fails, returns base message
+        // With mutation (row != -1 becomes true): col != -1 is true, enters first if
+        Assert.assertEquals("Should return base message when row is -1", "Test", message);
+        Assert.assertFalse("Should not contain 'line' when row is -1", message.contains("line"));
+        Assert.assertFalse("Should not contain 'character' when row is -1", message.contains("character"));
+    }
 }
 

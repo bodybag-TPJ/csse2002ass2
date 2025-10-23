@@ -215,6 +215,46 @@ public class BeanWorldTest {
     }
 
     @Test
+    public void testTilesAtPositionXMatchesButYDoesNot() {
+        BeanWorld world = WorldBuilder.empty();
+        TileGrid dimensions = new TileGrid(25, 2000);
+        
+        // Place a tile at (0, 0) - corresponds to grid (0, 0)
+        Tile tileAt0_0 = new Dirt(0, 0);
+        // Place a tile at (0, 100) - corresponds to grid (0, 4) with tileSize 25
+        Tile tileAt0_100 = new Grass(0, 100);
+        
+        world.place(tileAt0_0);
+        world.place(tileAt0_100);
+        
+        // Query at position (10, 10) - corresponds to grid (0, 0)
+        List<Tile> result = world.tilesAtPosition(10, 10, dimensions);
+        
+        Assert.assertTrue("Should include tile at same grid position", result.contains(tileAt0_0));
+        Assert.assertFalse("Should NOT include tile with same X but different Y", result.contains(tileAt0_100));
+    }
+
+    @Test
+    public void testTilesAtPositionYMatchesButXDoesNot() {
+        BeanWorld world = WorldBuilder.empty();
+        TileGrid dimensions = new TileGrid(25, 2000);
+        
+        // Place a tile at (0, 0) - corresponds to grid (0, 0)
+        Tile tileAt0_0 = new Dirt(0, 0);
+        // Place a tile at (100, 0) - corresponds to grid (4, 0) with tileSize 25
+        Tile tileAt100_0 = new Grass(100, 0);
+        
+        world.place(tileAt0_0);
+        world.place(tileAt100_0);
+        
+        // Query at position (10, 10) - corresponds to grid (0, 0)
+        List<Tile> result = world.tilesAtPosition(10, 10, dimensions);
+        
+        Assert.assertTrue("Should include tile at same grid position", result.contains(tileAt0_0));
+        Assert.assertFalse("Should NOT include tile with same Y but different X", result.contains(tileAt100_0));
+    }
+
+    @Test
     public void testPlace() {
         BeanWorld world = WorldBuilder.empty();
         Tile tile = new Dirt(0, 0);
