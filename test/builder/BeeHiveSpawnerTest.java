@@ -112,6 +112,154 @@ public class BeeHiveSpawnerTest {
         }
     }
 
+    /**
+     * Test tick method with sufficient resources and 'h' key pressed
+     * Covers mutations: removed conditional checks and method calls
+     */
+    @Test
+    public void testTickWithSufficientResourcesAndHKeyPressed() {
+        TestEngineState engineState = new TestEngineState();
+        TestGameState gameState = new TestGameState();
+        
+        // Set up sufficient resources
+        gameState.inventory.setFood(5);
+        gameState.inventory.setCoins(5);
+        engineState.setHKeyPressed(true);
+        
+        int initialFood = gameState.inventory.getFood();
+        int initialCoins = gameState.inventory.getCoins();
+        int initialNpcCount = gameState.getNpcs().npcs.size();
+        
+        spawner.tick(engineState, gameState);
+        
+        // Verify resources were consumed (covers addFood and addCoins mutations)
+        Assert.assertEquals("Food should be reduced by 3", initialFood - 3, gameState.inventory.getFood());
+        Assert.assertEquals("Coins should be reduced by 3", initialCoins - 3, gameState.inventory.getCoins());
+        
+        // Verify a BeeHive was added (covers npcs.add call)
+        Assert.assertEquals("One BeeHive should be added", initialNpcCount + 1, gameState.getNpcs().npcs.size());
+    }
+
+    /**
+     * Test tick method with insufficient food
+     * Covers conditional mutations for food >= 3 check
+     */
+    @Test
+    public void testTickWithInsufficientFood() {
+        TestEngineState engineState = new TestEngineState();
+        TestGameState gameState = new TestGameState();
+        
+        // Set up insufficient food but sufficient coins
+        gameState.inventory.setFood(2); // Less than 3
+        gameState.inventory.setCoins(5);
+        engineState.setHKeyPressed(true);
+        
+        int initialFood = gameState.inventory.getFood();
+        int initialCoins = gameState.inventory.getCoins();
+        int initialNpcCount = gameState.getNpcs().npcs.size();
+        
+        spawner.tick(engineState, gameState);
+        
+        // Verify no resources were consumed and no BeeHive was added
+        Assert.assertEquals("Food should not change", initialFood, gameState.inventory.getFood());
+        Assert.assertEquals("Coins should not change", initialCoins, gameState.inventory.getCoins());
+        Assert.assertEquals("No BeeHive should be added", initialNpcCount, gameState.getNpcs().npcs.size());
+    }
+
+    /**
+     * Test tick method with insufficient coins
+     * Covers conditional mutations for coins >= 3 check
+     */
+    @Test
+    public void testTickWithInsufficientCoins() {
+        TestEngineState engineState = new TestEngineState();
+        TestGameState gameState = new TestGameState();
+        
+        // Set up sufficient food but insufficient coins
+        gameState.inventory.setFood(5);
+        gameState.inventory.setCoins(2); // Less than 3
+        engineState.setHKeyPressed(true);
+        
+        int initialFood = gameState.inventory.getFood();
+        int initialCoins = gameState.inventory.getCoins();
+        int initialNpcCount = gameState.getNpcs().npcs.size();
+        
+        spawner.tick(engineState, gameState);
+        
+        // Verify no resources were consumed and no BeeHive was added
+        Assert.assertEquals("Food should not change", initialFood, gameState.inventory.getFood());
+        Assert.assertEquals("Coins should not change", initialCoins, gameState.inventory.getCoins());
+        Assert.assertEquals("No BeeHive should be added", initialNpcCount, gameState.getNpcs().npcs.size());
+    }
+
+    /**
+     * Test tick method with 'h' key not pressed
+     * Covers conditional mutations for key press check
+     */
+    @Test
+    public void testTickWithHKeyNotPressed() {
+        TestEngineState engineState = new TestEngineState();
+        TestGameState gameState = new TestGameState();
+        
+        // Set up sufficient resources but don't press 'h' key
+        gameState.inventory.setFood(5);
+        gameState.inventory.setCoins(5);
+        engineState.setHKeyPressed(false);
+        
+        int initialFood = gameState.inventory.getFood();
+        int initialCoins = gameState.inventory.getCoins();
+        int initialNpcCount = gameState.getNpcs().npcs.size();
+        
+        spawner.tick(engineState, gameState);
+        
+        // Verify no resources were consumed and no BeeHive was added
+        Assert.assertEquals("Food should not change", initialFood, gameState.inventory.getFood());
+        Assert.assertEquals("Coins should not change", initialCoins, gameState.inventory.getCoins());
+        Assert.assertEquals("No BeeHive should be added", initialNpcCount, gameState.getNpcs().npcs.size());
+    }
+
+    /**
+     * Test tick method with exact required resources
+     * Covers boundary conditions for equality checks
+     */
+    @Test
+    public void testTickWithExactRequiredResources() {
+        TestEngineState engineState = new TestEngineState();
+        TestGameState gameState = new TestGameState();
+        
+        // Set up exactly required resources
+        gameState.inventory.setFood(3); // Exactly 3
+        gameState.inventory.setCoins(3); // Exactly 3
+        engineState.setHKeyPressed(true);
+        
+        int initialNpcCount = gameState.getNpcs().npcs.size();
+        
+        spawner.tick(engineState, gameState);
+        
+        // Verify resources were consumed and BeeHive was added
+        Assert.assertEquals("Food should be 0 after consumption", 0, gameState.inventory.getFood());
+        Assert.assertEquals("Coins should be 0 after consumption", 0, gameState.inventory.getCoins());
+        Assert.assertEquals("One BeeHive should be added", initialNpcCount + 1, gameState.getNpcs().npcs.size());
+    }
+
+    /**
+     * Test multiple tick calls to verify timer behavior
+     * Covers timer.tick() call mutation
+     */
+    @Test
+    public void testMultipleTicks() {
+        TestEngineState engineState = new TestEngineState();
+        TestGameState gameState = new TestGameState();
+        
+        // Call tick multiple times to exercise timer
+        spawner.tick(engineState, gameState);
+        spawner.tick(engineState, gameState);
+        spawner.tick(engineState, gameState);
+        
+        // Should complete without exceptions
+        Assert.assertNotNull("Timer should still exist", spawner.getTimer());
+    }
+
     // Minimal test implementations that focus only on what BeeHiveSpawner needs
     private static class TestEngineState implements engine.EngineState {
         private boolean hKeyPressed = false;
@@ -156,7 +304,7 @@ public class BeeHiveSpawnerTest {
     }
 
     private static class TestGameState implements builder.GameState {
-        private TestInventory inventory = new TestInventory();
+        public TestInventory inventory = new TestInventory();
         private TestPlayer player = new TestPlayer();
         private builder.entities.npc.NpcManager npcs = new builder.entities.npc.NpcManager();
         private builder.entities.npc.enemies.EnemyManager enemies = new builder.entities.npc.enemies.EnemyManager(null);
