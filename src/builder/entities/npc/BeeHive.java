@@ -22,6 +22,12 @@ public class BeeHive extends Npc {
 
     private final RepeatingTimer timer = new RepeatingTimer(TIMER);
 
+    /**
+     * Creates a new BeeHive at the specified coordinates.
+     *
+     * @param x The x coordinate
+     * @param y The y coordinate
+     */
     public BeeHive(int x, int y) {
         super(x, y);
         this.setSprite(art.getSprite("default"));
@@ -48,6 +54,12 @@ public class BeeHive extends Npc {
         }
     }
 
+    /**
+     * Checks for nearby enemies and spawns a bee if an enemy is detected.
+     *
+     * @param targets List of enemy targets to check for
+     * @return The spawned bee, or null if no bee was spawned
+     */
     public Npc checkAndSpawnBee(ArrayList<Enemy> targets) {
         for (Enemy enemy : targets) {
             if (this.distanceFrom(enemy) < DETECTION_DISTANCE && this.loaded) {

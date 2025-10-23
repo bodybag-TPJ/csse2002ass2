@@ -51,6 +51,7 @@ public class PigeonSpawner implements Spawner {
                                     return false;
                                 });
 
+
         if (tiles.size() > 0) {
             int distance = this.distanceFrom(tiles.getFirst());
             Tile closest = tiles.getFirst();

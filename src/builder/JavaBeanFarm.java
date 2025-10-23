@@ -76,7 +76,7 @@ public class JavaBeanFarm implements Game {
      */
     private String readAllReader(Reader reader) throws IOException {
         BufferedReader br = new BufferedReader(reader);
-         StringJoiner sb = new StringJoiner(System.lineSeparator());
+        StringJoiner sb = new StringJoiner(System.lineSeparator());
         String line;
         while ((line = br.readLine()) != null) {
             sb.add(line);
@@ -89,7 +89,8 @@ public class JavaBeanFarm implements Game {
      *
      * @param dimensions The dimensions we want for this game.
      * @param mapReader A reader the contains a description of the world map.
-     * @param detailReader A reader the contains the overlay details for the game, e.g. spawner locations.
+     * @param detailReader A reader the contains the overlay details for the game,
+     *                     e.g. spawner locations.
      * @throws IOException If the game is unable to find or open the default world map file.
      * @throws WorldLoadException If the default world map file cannot be parsed successfully.
      */
@@ -218,7 +219,8 @@ public class JavaBeanFarm implements Game {
      * @throws IOException If world data cannot be read
      * @throws WorldLoadException If world cannot be constructed
      */
-    private BeanWorld initializeWorld(Dimensions dimensions, Reader mapReader, String detailsContent) 
+    private BeanWorld initializeWorld(Dimensions dimensions, Reader mapReader, 
+                                       String detailsContent) 
             throws IOException, WorldLoadException {
         String worldContent = readAllReader(mapReader);
         BeanWorld world = WorldBuilder.fromTiles(WorldBuilder.fromString(dimensions, worldContent));

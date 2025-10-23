@@ -1,5 +1,6 @@
 package builder;
 
+import builder.GameState;
 import builder.entities.npc.enemies.Enemy;
 import scenarios.mocks.MockEngineState;
 
@@ -12,20 +13,23 @@ import org.junit.Test;
  */
 public class EnemyTest {
 
-    private Enemy enemy;
+    private TestableEnemy enemy;
     private MockEngineState mockEngineState;
 
     @Before
     public void setUp() {
-        enemy = new Enemy(100, 200);
+        enemy = new TestableEnemy(100, 200);
         mockEngineState = new MockEngineState();
     }
 
     @Test
     public void testTickCallsSuperTick() {
         // Test that enemy.tick calls super.tick (line 15)
+        Assert.assertFalse("Super tick should not have been called initially", enemy.superTickCalled);
+        
         enemy.tick(mockEngineState, null);
-        Assert.assertTrue("Tick method should complete without error", true);
+        
+        Assert.assertTrue("Super tick should have been called", enemy.superTickCalled);
     }
 
     @Test
@@ -39,5 +43,20 @@ public class EnemyTest {
         // Test that interact method exists and can be called without error
         enemy.interact(mockEngineState, null);
         Assert.assertTrue("Interact method should complete without error", true);
+    }
+
+    // Testable subclass to track super.tick calls
+    private static class TestableEnemy extends Enemy {
+        public boolean superTickCalled = false;
+
+        public TestableEnemy(int x, int y) {
+            super(x, y);
+        }
+
+        @Override
+        public void tick(engine.EngineState state, GameState game) {
+            superTickCalled = true;
+            super.tick(state, game);
+        }
     }
 }

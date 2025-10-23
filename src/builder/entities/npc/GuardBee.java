@@ -90,7 +90,7 @@ public class GuardBee extends Npc implements Expirable {
                 this.markForRemoval();
             }
         }
-        for (Enemy enemy : game.getEnemies().getALl()) {
+        for (Enemy enemy : game.getEnemies().getAll()) {
             if (this.distanceFrom(enemy) < state.getDimensions().tileSize()) {
                 enemy.markForRemoval();
                 this.markForRemoval();

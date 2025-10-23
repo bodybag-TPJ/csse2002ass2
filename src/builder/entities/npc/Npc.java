@@ -8,11 +8,20 @@ import engine.EngineState;
 import engine.game.Entity;
 import engine.game.HasPosition;
 
+/**
+ * Base class for all non-player characters in the game.
+ */
 public class Npc extends Entity implements Interactable, Tickable, Directable {
 
     private int direction = 0;
     private double speed = 1;
 
+    /**
+     * Creates a new Npc at the specified coordinates.
+     *
+     * @param x The x coordinate
+     * @param y The y coordinate
+     */
     public Npc(int x, int y) {
         super(x, y);
     }

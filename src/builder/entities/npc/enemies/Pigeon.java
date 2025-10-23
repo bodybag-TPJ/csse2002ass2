@@ -135,12 +135,14 @@ public class Pigeon extends Enemy implements Expirable {
             }
             this.trackedTarget = closest;
 
-            if (this.attacking
-                    && this.distanceFrom(this.trackedTarget) < engine.getDimensions().tileSize()) {
+            int distanceToTarget = this.distanceFrom(this.trackedTarget);
+            int tileSize = engine.getDimensions().tileSize();
+            if (this.attacking && distanceToTarget < tileSize) {
                 for (Entity entity : closest.getStackedEntities()) {
                     if (entity instanceof Cabbage cabbage) {
                         cabbage.markForRemoval();
                         this.attacking = false;
+                        break;
                     } else {
                         // do nothing
                     }

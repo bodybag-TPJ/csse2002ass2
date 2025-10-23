@@ -58,6 +58,10 @@ public class OverlayBuilderTest {
         Assert.assertEquals("X should be 100", 100, result.getX());
         Assert.assertEquals("Y should be 200", 200, result.getY());
         Assert.assertEquals("Duration should be 300", 300, result.getDuration());
+        Assert.assertTrue("toString should contain values", 
+                          result.toString().contains("100") && 
+                          result.toString().contains("200") && 
+                          result.toString().contains("300"));
     }
 
     @Test
@@ -70,6 +74,11 @@ public class OverlayBuilderTest {
         Assert.assertEquals("Y should be 75", 75, result.getY());
         Assert.assertEquals("Coins should be 100", 100, result.getStartingCoins());
         Assert.assertEquals("Food should be 25", 25, result.getStartingFood());
+        Assert.assertTrue("toString should contain values", 
+                          result.toString().contains("50") && 
+                          result.toString().contains("75") && 
+                          result.toString().contains("100") && 
+                          result.toString().contains("25"));
     }
 
     @Test
@@ -83,6 +92,9 @@ public class OverlayBuilderTest {
         Assert.assertNotNull("Result should not be null", result);
         Assert.assertEquals("X should be 10", 10, result.getX());
         Assert.assertEquals("Y should be 20", 20, result.getY());
+        Assert.assertTrue("toString should contain values", 
+                          result.toString().contains("10") && 
+                          result.toString().contains("20"));
     }
 
     @Test

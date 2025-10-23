@@ -122,7 +122,7 @@ public class EnemyManager implements Tickable, Interactable, RenderableGroup {
      * 
      * @return A reference to all active enemies
      */
-    public ArrayList<Enemy> getALl() {
+    public ArrayList<Enemy> getAll() {
         return this.Birds;
     }
 

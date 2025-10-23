@@ -5,7 +5,16 @@ import builder.entities.npc.Npc;
 
 import engine.EngineState;
 
+/**
+ * Base class for all enemy entities in the game.
+ */
 public class Enemy extends Npc {
+    /**
+     * Creates a new Enemy at the specified coordinates.
+     *
+     * @param x The x coordinate
+     * @param y The y coordinate
+     */
     public Enemy(int x, int y) {
         super(x, y);
     }
