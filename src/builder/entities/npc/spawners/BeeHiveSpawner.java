@@ -43,7 +43,8 @@ public class BeeHiveSpawner implements Spawner {
         if (canAfford && state.getKeys().isDown('h')) {
             game.getInventory().addFood(-3);
             game.getInventory().addCoins(-3);
-            game.getNpcs().getNpcs().add(new BeeHive(game.getPlayer().getX(), game.getPlayer().getY()));
+            BeeHive hive = new BeeHive(game.getPlayer().getX(), game.getPlayer().getY());
+            game.getNpcs().getNpcs().add(hive);
         }
         // look at use code example to spawn based on user input and only on grass tiles
     }

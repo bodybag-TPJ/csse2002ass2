@@ -209,6 +209,28 @@ public class NpcManagerTest {
     }
 
     @Test
+    public void testInteractCallsEachInteractableOnce() {
+        NpcManager manager = new NpcManager();
+        MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
+        TestGameState game = new TestGameState();
+        
+        CountingInteractableNpc npc1 = new CountingInteractableNpc(100, 200);
+        CountingInteractableNpc npc2 = new CountingInteractableNpc(300, 400);
+        CountingInteractableNpc npc3 = new CountingInteractableNpc(500, 600);
+        
+        manager.addNpc(npc1);
+        manager.addNpc(npc2);
+        manager.addNpc(npc3);
+        
+        manager.interact(engine, game);
+        
+        // If instanceof check is replaced with true, each NPC should still be called exactly once
+        Assert.assertEquals("Npc1 should be called exactly once", 1, npc1.interactCount);
+        Assert.assertEquals("Npc2 should be called exactly once", 1, npc2.interactCount);
+        Assert.assertEquals("Npc3 should be called exactly once", 1, npc3.interactCount);
+    }
+
+    @Test
     public void testGetInteractablesConditionalCheck() {
         NpcManager manager = new NpcManager();
         MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
@@ -354,6 +376,22 @@ public class NpcManagerTest {
         @Override
         public void interact(engine.EngineState state, builder.GameState game) {
             interactCalled = true;
+        }
+    }
+
+    private static class CountingInteractableNpc extends Npc {
+        public int interactCount = 0;
+        
+        public CountingInteractableNpc(int x, int y) {
+            super(x, y);
+        }
+        
+        @Override
+        public void tick(engine.EngineState state, builder.GameState game) {}
+        
+        @Override
+        public void interact(engine.EngineState state, builder.GameState game) {
+            interactCount++;
         }
     }
 
