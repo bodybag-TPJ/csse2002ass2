@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class NpcManager implements Interactable, Tickable, RenderableGroup {
     
-    /** List of all managed NPCs. Public for backward compatibility. */
-    public final ArrayList<Npc> npcs = new ArrayList<>();
+    /** List of all managed NPCs. */
+    private final ArrayList<Npc> npcs = new ArrayList<>();
 
     /**
      * Creates a new NpcManager with an empty list of NPCs.
@@ -28,12 +28,21 @@ public class NpcManager implements Interactable, Tickable, RenderableGroup {
     }
 
     /**
+     * Gets the internal list of NPCs for direct access.
+     * 
+     * @return The list of NPCs
+     */
+    public ArrayList<Npc> getNpcs() {
+        return this.npcs;
+    }
+
+    /**
      * Removes all NPCs marked for removal from the active NPC list.
      */
     public void cleanup() {
-        for (int i = this.npcs.size() - 1; i >= 0; i -= 1) {
-            if (this.npcs.get(i).isMarkedForRemoval()) {
-                this.npcs.remove(i);
+        for (int i = this.getNpcs().size() - 1; i >= 0; i -= 1) {
+            if (this.getNpcs().get(i).isMarkedForRemoval()) {
+                this.getNpcs().remove(i);
             }
         }
     }
@@ -44,7 +53,7 @@ public class NpcManager implements Interactable, Tickable, RenderableGroup {
      * @param npc The NPC to add to the manager
      */
     public void addNpc(Npc npc) {
-        this.npcs.add(npc);
+        this.getNpcs().add(npc);
     }
 
     @Override

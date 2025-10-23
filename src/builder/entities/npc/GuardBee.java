@@ -76,7 +76,7 @@ public class GuardBee extends Npc implements Expirable {
         super.tick(state);
 
         boolean foundNearbyEnemy = false;
-        for (Enemy enemy : game.getEnemies().Birds) {
+        for (Enemy enemy : game.getEnemies().getBirds()) {
             if (this.distanceFrom(enemy) < 350) {
                 double deltaX = enemy.getX() - this.getX();
                 double deltaY = enemy.getY() - this.getY();

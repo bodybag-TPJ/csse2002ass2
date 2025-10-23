@@ -13,7 +13,7 @@ public class NpcManagerTest {
     public void testConstructor() {
         NpcManager manager = new NpcManager();
         Assert.assertNotNull("Manager should be created", manager);
-        Assert.assertEquals("Initial NPC list should be empty", 0, manager.npcs.size());
+        Assert.assertEquals("Initial NPC list should be empty", 0, manager.getNpcs().size());
     }
 
     @Test
@@ -23,8 +23,8 @@ public class NpcManagerTest {
         
         manager.addNpc(npc);
         
-        Assert.assertEquals("Should have 1 NPC", 1, manager.npcs.size());
-        Assert.assertTrue("Should contain added NPC", manager.npcs.contains(npc));
+        Assert.assertEquals("Should have 1 NPC", 1, manager.getNpcs().size());
+        Assert.assertTrue("Should contain added NPC", manager.getNpcs().contains(npc));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class NpcManagerTest {
         manager.addNpc(npc1);
         manager.addNpc(npc2);
         
-        Assert.assertEquals("Should have 2 NPCs", 2, manager.npcs.size());
+        Assert.assertEquals("Should have 2 NPCs", 2, manager.getNpcs().size());
     }
 
     @Test
@@ -55,10 +55,10 @@ public class NpcManagerTest {
         
         manager.cleanup();
         
-        Assert.assertEquals("Should have 2 NPCs after cleanup", 2, manager.npcs.size());
-        Assert.assertTrue("Should still contain npc1", manager.npcs.contains(npc1));
-        Assert.assertFalse("Should not contain npc2", manager.npcs.contains(npc2));
-        Assert.assertTrue("Should still contain npc3", manager.npcs.contains(npc3));
+        Assert.assertEquals("Should have 2 NPCs after cleanup", 2, manager.getNpcs().size());
+        Assert.assertTrue("Should still contain npc1", manager.getNpcs().contains(npc1));
+        Assert.assertFalse("Should not contain npc2", manager.getNpcs().contains(npc2));
+        Assert.assertTrue("Should still contain npc3", manager.getNpcs().contains(npc3));
     }
 
     @Test
@@ -74,7 +74,7 @@ public class NpcManagerTest {
         
         manager.cleanup();
         
-        Assert.assertEquals("All marked NPCs should be removed", 0, manager.npcs.size());
+        Assert.assertEquals("All marked NPCs should be removed", 0, manager.getNpcs().size());
     }
 
     @Test
@@ -88,7 +88,7 @@ public class NpcManagerTest {
         
         manager.cleanup();
         
-        Assert.assertEquals("Should still have 2 NPCs", 2, manager.npcs.size());
+        Assert.assertEquals("Should still have 2 NPCs", 2, manager.getNpcs().size());
     }
 
     @Test
@@ -103,8 +103,8 @@ public class NpcManagerTest {
         
         manager.cleanup();
         
-        Assert.assertEquals("Only unmarked NPC should remain", 1, manager.npcs.size());
-        Assert.assertEquals("Remaining NPC should be the unmarked one", unmarked, manager.npcs.get(0));
+        Assert.assertEquals("Only unmarked NPC should remain", 1, manager.getNpcs().size());
+        Assert.assertEquals("Remaining NPC should be the unmarked one", unmarked, manager.getNpcs().get(0));
     }
 
     @Test
@@ -119,7 +119,7 @@ public class NpcManagerTest {
         
         manager.tick(engine, game);
         
-        Assert.assertEquals("Marked NPC should be cleaned up during tick", 0, manager.npcs.size());
+        Assert.assertEquals("Marked NPC should be cleaned up during tick", 0, manager.getNpcs().size());
     }
 
     @Test
@@ -289,7 +289,7 @@ public class NpcManagerTest {
         java.util.List<Npc> copy = manager.getAllNpcs();
         copy.clear();
         
-        Assert.assertEquals("Original list should not be affected", 1, manager.npcs.size());
+        Assert.assertEquals("Original list should not be affected", 1, manager.getNpcs().size());
     }
 
     @Test
@@ -303,7 +303,7 @@ public class NpcManagerTest {
         
         manager.cleanup();
         
-        Assert.assertEquals("Single marked NPC should be removed", 0, manager.npcs.size());
+        Assert.assertEquals("Single marked NPC should be removed", 0, manager.getNpcs().size());
     }
 
     @Test
@@ -323,8 +323,8 @@ public class NpcManagerTest {
         
         manager.cleanup();
         
-        Assert.assertEquals("Two marked NPCs should be removed", 1, manager.npcs.size());
-        Assert.assertEquals("Only npc3 should remain", npc3, manager.npcs.get(0));
+        Assert.assertEquals("Two marked NPCs should be removed", 1, manager.getNpcs().size());
+        Assert.assertEquals("Only npc3 should remain", npc3, manager.getNpcs().get(0));
     }
 
     // Test helper classes

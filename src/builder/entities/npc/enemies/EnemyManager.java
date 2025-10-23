@@ -22,9 +22,9 @@ import java.util.List;
 public class EnemyManager implements Tickable, Interactable, RenderableGroup {
 
     private final ArrayList<Spawner> spawners = new ArrayList<>();
-    public final ArrayList<Enemy> Birds = new ArrayList<>();
-    public int spawnX;
-    public int spawnY;
+    private final ArrayList<Enemy> birds = new ArrayList<>();
+    private int spawnX;
+    private int spawnY;
 
     /**
      * Creates a new EnemyManager for the given game dimensions.
@@ -36,12 +36,57 @@ public class EnemyManager implements Tickable, Interactable, RenderableGroup {
     }
 
     /**
+     * Gets the list of all enemies (birds).
+     * 
+     * @return The list of enemies
+     */
+    public ArrayList<Enemy> getBirds() {
+        return this.birds;
+    }
+
+    /**
+     * Gets the current spawn X coordinate.
+     * 
+     * @return The spawn X coordinate
+     */
+    public int getSpawnX() {
+        return this.spawnX;
+    }
+
+    /**
+     * Sets the spawn X coordinate.
+     * 
+     * @param spawnX The new spawn X coordinate
+     */
+    public void setSpawnX(int spawnX) {
+        this.spawnX = spawnX;
+    }
+
+    /**
+     * Gets the current spawn Y coordinate.
+     * 
+     * @return The spawn Y coordinate
+     */
+    public int getSpawnY() {
+        return this.spawnY;
+    }
+
+    /**
+     * Sets the spawn Y coordinate.
+     * 
+     * @param spawnY The new spawn Y coordinate
+     */
+    public void setSpawnY(int spawnY) {
+        this.spawnY = spawnY;
+    }
+
+    /**
      * Removes all enemies marked for removal from the active enemy list.
      */
     public void cleanup() {
-        for (int i = this.Birds.size() - 1; i >= 0; i -= 1) {
-            if (this.Birds.get(i).isMarkedForRemoval()) {
-                this.Birds.remove(i);
+        for (int i = this.birds.size() - 1; i >= 0; i -= 1) {
+            if (this.birds.get(i).isMarkedForRemoval()) {
+                this.birds.remove(i);
             }
         }
     }
@@ -62,8 +107,8 @@ public class EnemyManager implements Tickable, Interactable, RenderableGroup {
      * @return The created magpie
      */
     public Magpie mkM(Player player) {
-        final Magpie magpie = new Magpie(this.spawnX, this.spawnY, player);
-        this.Birds.add(magpie);
+        final Magpie magpie = new Magpie(this.getSpawnX(), this.getSpawnY(), player);
+        this.birds.add(magpie);
         return magpie;
     }
 
@@ -74,8 +119,8 @@ public class EnemyManager implements Tickable, Interactable, RenderableGroup {
      * @return The created pigeon
      */
     public Pigeon mkP(HasPosition target) {
-        final Pigeon pigeon = new Pigeon(this.spawnX, this.spawnY, target);
-        this.Birds.add(pigeon);
+        final Pigeon pigeon = new Pigeon(this.getSpawnX(), this.getSpawnY(), target);
+        this.birds.add(pigeon);
         return pigeon;
     }
 
@@ -86,8 +131,8 @@ public class EnemyManager implements Tickable, Interactable, RenderableGroup {
      * @return The created eagle
      */
     public Eagle mkE(Player player) {
-        final Eagle eagle = new Eagle(this.spawnX, this.spawnY, player);
-        this.Birds.add(eagle);
+        final Eagle eagle = new Eagle(this.getSpawnX(), this.getSpawnY(), player);
+        this.birds.add(eagle);
         return eagle;
     }
 
@@ -97,7 +142,7 @@ public class EnemyManager implements Tickable, Interactable, RenderableGroup {
         for (Spawner spawner : this.spawners) {
             spawner.tick(state, game);
         }
-        for (Enemy bird : Birds) {
+        for (Enemy bird : birds) {
             bird.tick(state, game);
         }
     }
@@ -109,7 +154,7 @@ public class EnemyManager implements Tickable, Interactable, RenderableGroup {
      */
     public ArrayList<Magpie> getMagpies() {
         final ArrayList<Magpie> magpies = new ArrayList<>();
-        for (Enemy bird : Birds) {
+        for (Enemy bird : birds) {
             if (bird instanceof Magpie magpie) {
                 magpies.add(magpie);
             }
@@ -123,7 +168,7 @@ public class EnemyManager implements Tickable, Interactable, RenderableGroup {
      * @return A reference to all active enemies
      */
     public ArrayList<Enemy> getAll() {
-        return this.Birds;
+        return this.birds;
     }
 
     /**
@@ -141,6 +186,6 @@ public class EnemyManager implements Tickable, Interactable, RenderableGroup {
 
     @Override
     public List<Renderable> render() {
-        return new ArrayList<>(this.Birds);
+        return new ArrayList<>(this.birds);
     }
 }

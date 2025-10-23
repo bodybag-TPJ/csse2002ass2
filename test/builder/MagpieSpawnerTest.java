@@ -75,7 +75,7 @@ public class MagpieSpawnerTest {
         
         spawner.tick(engine, game);
         
-        Assert.assertEquals("Should not spawn magpie when timer not finished", 0, game.enemies.Birds.size());
+        Assert.assertEquals("Should not spawn magpie when timer not finished", 0, game.enemies.getBirds().size());
     }
 
     @Test
@@ -88,7 +88,7 @@ public class MagpieSpawnerTest {
             spawner.tick(engine, game);
         }
         
-        Assert.assertTrue("Should spawn magpie when timer finished", game.enemies.Birds.size() > 0);
+        Assert.assertTrue("Should spawn magpie when timer finished", game.enemies.getBirds().size() > 0);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class MagpieSpawnerTest {
             spawner.tick(engine, game);
         }
         
-        Assert.assertTrue("Should spawn multiple magpies", game.enemies.Birds.size() >= 1);
+        Assert.assertTrue("Should spawn multiple magpies", game.enemies.getBirds().size() >= 1);
     }
 
     @Test
@@ -114,8 +114,8 @@ public class MagpieSpawnerTest {
             spawner.tick(engine, game);
         }
         
-        Assert.assertEquals("SpawnX should be set", 300, game.enemies.spawnX);
-        Assert.assertEquals("SpawnY should be set", 400, game.enemies.spawnY);
+        Assert.assertEquals("SpawnX should be set", 300, game.enemies.getSpawnX());
+        Assert.assertEquals("SpawnY should be set", 400, game.enemies.getSpawnY());
     }
 
     @Test

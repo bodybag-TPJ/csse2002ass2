@@ -76,12 +76,12 @@ public class ScarecrowSpawnerTest {
         MockEngineState engine = new MockEngineState(new MockKeys('c'));
         
         int initialCoins = game.inventory.getCoins();
-        int initialNpcs = game.npcs.npcs.size();
+        int initialNpcs = game.getNpcs().getNpcs().size();
         
         spawner.tick(engine, game);
         
         Assert.assertEquals("Coins should be deducted", initialCoins - 2, game.inventory.getCoins());
-        Assert.assertEquals("NPC should be added", initialNpcs + 1, game.npcs.npcs.size());
+        Assert.assertEquals("NPC should be added", initialNpcs + 1, game.getNpcs().getNpcs().size());
     }
 
     @Test
@@ -92,10 +92,10 @@ public class ScarecrowSpawnerTest {
         
         MockEngineState engine = new MockEngineState(new MockKeys('c'));
         
-        int initialNpcs = game.npcs.npcs.size();
+        int initialNpcs = game.getNpcs().getNpcs().size();
         spawner.tick(engine, game);
         
-        Assert.assertEquals("NPC should not be added", initialNpcs, game.npcs.npcs.size());
+        Assert.assertEquals("NPC should not be added", initialNpcs, game.getNpcs().getNpcs().size());
     }
 
     @Test

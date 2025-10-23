@@ -49,8 +49,8 @@ public class EagleSpawner implements Spawner {
     public void tick(EngineState state, GameState game) {
         this.timer.tick();
         if (this.getTimer().isFinished()) {
-            game.getEnemies().spawnX = this.getX();
-            game.getEnemies().spawnY = this.getY();
+            game.getEnemies().setSpawnX(this.getX());
+            game.getEnemies().setSpawnY(this.getY());
             game.getEnemies().mkE(game.getPlayer());
         }
     }

@@ -92,11 +92,11 @@ public class BeeHiveTest {
         
         // Add a nearby enemy so checkAndSpawnBee uses up loaded state
         TestEnemy enemy = new TestEnemy(150, 250);
-        game.enemies.Birds.add(enemy);
+        game.enemies.getBirds().add(enemy);
         
         // First interact spawns bee and sets loaded = false
         hive.interact(engine, game);
-        Assert.assertEquals("First interact should spawn 1 bee", 1, game.npcs.npcs.size());
+        Assert.assertEquals("First interact should spawn 1 bee", 1, game.getNpcs().getNpcs().size());
         
         // Call interact TIMER-1 more times (total TIMER ticks to finish timer)
         for (int i = 0; i < BeeHive.TIMER - 1; i++) {
@@ -108,7 +108,7 @@ public class BeeHiveTest {
         hive.interact(engine, game);
         
         // If timer.tick() was called correctly, we should have 2 bees now
-        Assert.assertEquals("After timer completes, should spawn another bee", 2, game.npcs.npcs.size());
+        Assert.assertEquals("After timer completes, should spawn another bee", 2, game.getNpcs().getNpcs().size());
     }
 
     @Test
@@ -119,13 +119,13 @@ public class BeeHiveTest {
         
         // Add a nearby enemy
         TestEnemy enemy = new TestEnemy(150, 250);
-        game.enemies.Birds.add(enemy);
+        game.enemies.getBirds().add(enemy);
         
-        int initialNpcCount = game.npcs.npcs.size();
+        int initialNpcCount = game.getNpcs().getNpcs().size();
         hive.interact(engine, game);
         
         Assert.assertTrue("NPC should be added when bee spawned", 
-            game.npcs.npcs.size() >= initialNpcCount);
+            game.getNpcs().getNpcs().size() >= initialNpcCount);
     }
 
     @Test
@@ -135,11 +135,11 @@ public class BeeHiveTest {
         TestGameState game = new TestGameState();
         
         // No enemies nearby
-        int initialNpcCount = game.npcs.npcs.size();
+        int initialNpcCount = game.getNpcs().getNpcs().size();
         hive.interact(engine, game);
         
         Assert.assertEquals("NPC count should not change when no enemies", 
-            initialNpcCount, game.npcs.npcs.size());
+            initialNpcCount, game.getNpcs().getNpcs().size());
     }
 
     @Test
@@ -278,13 +278,13 @@ public class BeeHiveTest {
         TestGameState game = new TestGameState();
         
         // No nearby enemies, checkAndSpawnBee returns null
-        int initialCount = game.npcs.npcs.size();
+        int initialCount = game.getNpcs().getNpcs().size();
         
         hive.interact(engine, game);
         
         // If npc != null check is removed (replaced with false), would not add
         // But we want to verify that null is NOT added
-        Assert.assertEquals("Should not add NPC when spawn returns null", initialCount, game.npcs.npcs.size());
+        Assert.assertEquals("Should not add NPC when spawn returns null", initialCount, game.getNpcs().getNpcs().size());
     }
 
     @Test
@@ -294,13 +294,13 @@ public class BeeHiveTest {
         TestGameState game = new TestGameState();
         
         TestEnemy enemy = new TestEnemy(150, 250);
-        game.enemies.Birds.add(enemy);
+        game.enemies.getBirds().add(enemy);
         
         // First interact: spawns bee, sets loaded = false, timer ticks 1 time
         hive.interact(engine, game);
         
         // Second interact immediately: should not spawn (loaded = false, timer not finished)
-        Npc secondBee = hive.checkAndSpawnBee(game.enemies.Birds);
+        Npc secondBee = hive.checkAndSpawnBee(game.enemies.getBirds());
         Assert.assertNull("Should not spawn when not loaded", secondBee);
         
         // Tick timer TIMER-1 more times to finish it (total TIMER ticks)
@@ -310,7 +310,7 @@ public class BeeHiveTest {
         
         // After TIMER total ticks, timer finished and loaded = true
         // Now should be able to spawn again
-        Npc thirdBee = hive.checkAndSpawnBee(game.enemies.Birds);
+        Npc thirdBee = hive.checkAndSpawnBee(game.enemies.getBirds());
         Assert.assertNotNull("Should spawn again after timer finishes", thirdBee);
     }
 
@@ -321,7 +321,7 @@ public class BeeHiveTest {
         TestGameState game = new TestGameState();
         
         TestEnemy enemy = new TestEnemy(150, 250);
-        game.enemies.Birds.add(enemy);
+        game.enemies.getBirds().add(enemy);
         
         // First interact: spawns bee, sets loaded = false
         hive.interact(engine, game);
@@ -332,7 +332,7 @@ public class BeeHiveTest {
         }
         
         // Timer not finished, should still not be able to spawn
-        Npc secondBee = hive.checkAndSpawnBee(game.enemies.Birds);
+        Npc secondBee = hive.checkAndSpawnBee(game.enemies.getBirds());
         Assert.assertNull("Should not spawn when timer not finished", secondBee);
     }
 

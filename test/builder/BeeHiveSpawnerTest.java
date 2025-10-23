@@ -128,7 +128,7 @@ public class BeeHiveSpawnerTest {
         
         int initialFood = gameState.inventory.getFood();
         int initialCoins = gameState.inventory.getCoins();
-        int initialNpcCount = gameState.getNpcs().npcs.size();
+        int initialNpcCount = gameState.getNpcs().getNpcs().size();
         
         spawner.tick(engineState, gameState);
         
@@ -137,7 +137,7 @@ public class BeeHiveSpawnerTest {
         Assert.assertEquals("Coins should be reduced by 3", initialCoins - 3, gameState.inventory.getCoins());
         
         // Verify a BeeHive was added (covers npcs.add call)
-        Assert.assertEquals("One BeeHive should be added", initialNpcCount + 1, gameState.getNpcs().npcs.size());
+        Assert.assertEquals("One BeeHive should be added", initialNpcCount + 1, gameState.getNpcs().getNpcs().size());
     }
 
     /**
@@ -156,14 +156,14 @@ public class BeeHiveSpawnerTest {
         
         int initialFood = gameState.inventory.getFood();
         int initialCoins = gameState.inventory.getCoins();
-        int initialNpcCount = gameState.getNpcs().npcs.size();
+        int initialNpcCount = gameState.getNpcs().getNpcs().size();
         
         spawner.tick(engineState, gameState);
         
         // Verify no resources were consumed and no BeeHive was added
         Assert.assertEquals("Food should not change", initialFood, gameState.inventory.getFood());
         Assert.assertEquals("Coins should not change", initialCoins, gameState.inventory.getCoins());
-        Assert.assertEquals("No BeeHive should be added", initialNpcCount, gameState.getNpcs().npcs.size());
+        Assert.assertEquals("No BeeHive should be added", initialNpcCount, gameState.getNpcs().getNpcs().size());
     }
 
     /**
@@ -182,14 +182,14 @@ public class BeeHiveSpawnerTest {
         
         int initialFood = gameState.inventory.getFood();
         int initialCoins = gameState.inventory.getCoins();
-        int initialNpcCount = gameState.getNpcs().npcs.size();
+        int initialNpcCount = gameState.getNpcs().getNpcs().size();
         
         spawner.tick(engineState, gameState);
         
         // Verify no resources were consumed and no BeeHive was added
         Assert.assertEquals("Food should not change", initialFood, gameState.inventory.getFood());
         Assert.assertEquals("Coins should not change", initialCoins, gameState.inventory.getCoins());
-        Assert.assertEquals("No BeeHive should be added", initialNpcCount, gameState.getNpcs().npcs.size());
+        Assert.assertEquals("No BeeHive should be added", initialNpcCount, gameState.getNpcs().getNpcs().size());
     }
 
     /**
@@ -208,14 +208,14 @@ public class BeeHiveSpawnerTest {
         
         int initialFood = gameState.inventory.getFood();
         int initialCoins = gameState.inventory.getCoins();
-        int initialNpcCount = gameState.getNpcs().npcs.size();
+        int initialNpcCount = gameState.getNpcs().getNpcs().size();
         
         spawner.tick(engineState, gameState);
         
         // Verify no resources were consumed and no BeeHive was added
         Assert.assertEquals("Food should not change", initialFood, gameState.inventory.getFood());
         Assert.assertEquals("Coins should not change", initialCoins, gameState.inventory.getCoins());
-        Assert.assertEquals("No BeeHive should be added", initialNpcCount, gameState.getNpcs().npcs.size());
+        Assert.assertEquals("No BeeHive should be added", initialNpcCount, gameState.getNpcs().getNpcs().size());
     }
 
     /**
@@ -232,14 +232,14 @@ public class BeeHiveSpawnerTest {
         gameState.inventory.setCoins(3); // Exactly 3
         engineState.setHKeyPressed(true);
         
-        int initialNpcCount = gameState.getNpcs().npcs.size();
+        int initialNpcCount = gameState.getNpcs().getNpcs().size();
         
         spawner.tick(engineState, gameState);
         
         // Verify resources were consumed and BeeHive was added
         Assert.assertEquals("Food should be 0 after consumption", 0, gameState.inventory.getFood());
         Assert.assertEquals("Coins should be 0 after consumption", 0, gameState.inventory.getCoins());
-        Assert.assertEquals("One BeeHive should be added", initialNpcCount + 1, gameState.getNpcs().npcs.size());
+        Assert.assertEquals("One BeeHive should be added", initialNpcCount + 1, gameState.getNpcs().getNpcs().size());
     }
 
     /**
