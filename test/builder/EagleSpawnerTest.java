@@ -74,7 +74,7 @@ public class EagleSpawnerTest {
         TestGameState game = new TestGameState();
         
         spawner.tick(engine, game);
-        Assert.assertTrue("Tick should complete", true);
+        Assert.assertEquals("Should not spawn eagle when timer not finished", 0, game.enemies.Birds.size());
     }
 
     @Test

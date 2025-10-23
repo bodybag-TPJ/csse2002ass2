@@ -9,6 +9,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -220,5 +223,75 @@ public class OverlayBuilderTest {
     public void testGetCabbageSpawnDetailsFromStringMissingSection() throws IOException {
         String content = ":vegetables:\nx:10 y:20\nend;";
         OverlayBuilder.getCabbageSpawnDetailsFromString(content);
+    }
+
+    /**
+     * Test the private load method with invalid file extension
+     * Covers line 23 mutations (conditional checks)
+     */
+    @Test
+    public void testLoadMethodWithInvalidExtension() throws Exception {
+        Method loadMethod = OverlayBuilder.class.getDeclaredMethod("load", String.class);
+        loadMethod.setAccessible(true);
+        
+        try {
+            loadMethod.invoke(null, "test.txt");
+            Assert.fail("Should throw IllegalArgumentException for non-.details file");
+        } catch (java.lang.reflect.InvocationTargetException e) {
+            Assert.assertTrue("Should throw IllegalArgumentException", 
+                e.getCause() instanceof IllegalArgumentException);
+            Assert.assertTrue("Message should mention .details", 
+                e.getCause().getMessage().contains(".details"));
+        }
+    }
+
+    /**
+     * Test the private load method with valid .details file
+     * Covers line 23 and line 26 mutations (conditional and return value)
+     */
+    @Test
+    public void testLoadMethodWithValidFile() throws Exception {
+        // Create a temporary .details file
+        Path tempFile = Files.createTempFile("test", ".details");
+        String testContent = "test content\nline 2";
+        Files.writeString(tempFile, testContent);
+        
+        try {
+            Method loadMethod = OverlayBuilder.class.getDeclaredMethod("load", String.class);
+            loadMethod.setAccessible(true);
+            
+            String result = (String) loadMethod.invoke(null, tempFile.toString());
+            
+            Assert.assertNotNull("Result should not be null", result);
+            Assert.assertFalse("Result should not be empty", result.isEmpty());
+            Assert.assertEquals("Content should match", testContent, result);
+        } finally {
+            Files.deleteIfExists(tempFile);
+        }
+    }
+
+    /**
+     * Test the private load method conditional with .details extension
+     * Covers line 23 mutation (replaced equality check with false/true)
+     */
+    @Test
+    public void testLoadMethodConditionalWithDetailsExtension() throws Exception {
+        Path tempFile = Files.createTempFile("valid", ".details");
+        Files.writeString(tempFile, "content");
+        
+        try {
+            Method loadMethod = OverlayBuilder.class.getDeclaredMethod("load", String.class);
+            loadMethod.setAccessible(true);
+            
+            // Should NOT throw exception for valid .details file
+            String result = (String) loadMethod.invoke(null, tempFile.toString());
+            Assert.assertNotNull("Should successfully load .details file", result);
+        } catch (java.lang.reflect.InvocationTargetException e) {
+            if (e.getCause() instanceof IllegalArgumentException) {
+                Assert.fail("Should not throw IllegalArgumentException for valid .details file");
+            }
+        } finally {
+            Files.deleteIfExists(tempFile);
+        }
     }
 }

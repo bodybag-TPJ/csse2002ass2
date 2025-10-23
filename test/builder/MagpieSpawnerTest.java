@@ -75,7 +75,7 @@ public class MagpieSpawnerTest {
         
         spawner.tick(engine, game);
         
-        Assert.assertTrue("Tick should complete", true);
+        Assert.assertEquals("Should not spawn magpie when timer not finished", 0, game.enemies.Birds.size());
     }
 
     @Test

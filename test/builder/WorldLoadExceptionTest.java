@@ -188,5 +188,14 @@ public class WorldLoadExceptionTest {
         Assert.assertTrue("Should include row info", message.contains("on line"));
         Assert.assertTrue("Should include col info", message.contains("character"));
     }
+
+    @Test
+    public void testConditionalRowNotNegativeOneButColIsNegativeOne() {
+        WorldLoadException exception = new WorldLoadException("Test error", 5);
+        String message = exception.getMessage();
+        Assert.assertTrue("Should include row info", message.contains("on line"));
+        Assert.assertFalse("Should NOT include character info when col is -1", message.contains("character"));
+        Assert.assertEquals("Should use second conditional branch", "Test error on line 6", message);
+    }
 }
 

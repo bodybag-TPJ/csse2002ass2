@@ -55,8 +55,14 @@ public class ScarecrowSpawnerTest {
         MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
         TestGameState game = new TestGameState();
         
-        spawner.tick(engine, game);
-        Assert.assertTrue("Tick should call timer.tick", true);
+        engine.timing.TickTimer timer = spawner.getTimer();
+        Assert.assertFalse("Timer should not be finished initially", timer.isFinished());
+        
+        for (int i = 0; i < 300; i++) {
+            spawner.tick(engine, game);
+        }
+        
+        Assert.assertTrue("Timer should be finished after 300 ticks", timer.isFinished());
     }
 
     @Test

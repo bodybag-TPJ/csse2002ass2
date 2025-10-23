@@ -195,6 +195,26 @@ public class BeanWorldTest {
     }
 
     @Test
+    public void testTilesAtPositionExcludesOtherTiles() {
+        BeanWorld world = WorldBuilder.empty();
+        TileGrid dimensions = new TileGrid(25, 2000);
+        
+        Tile tileAtOrigin = new Dirt(0, 0);
+        Tile tileAtFarLocation = new Grass(500, 500);
+        
+        world.place(tileAtOrigin);
+        world.place(tileAtFarLocation);
+        
+        List<Tile> resultAtOrigin = world.tilesAtPosition(10, 10, dimensions);
+        Assert.assertTrue("Should find tile at origin", resultAtOrigin.contains(tileAtOrigin));
+        Assert.assertFalse("Should not include tile at far location", resultAtOrigin.contains(tileAtFarLocation));
+        
+        List<Tile> resultAtFar = world.tilesAtPosition(510, 510, dimensions);
+        Assert.assertTrue("Should find tile at far location", resultAtFar.contains(tileAtFarLocation));
+        Assert.assertFalse("Should not include tile at origin", resultAtFar.contains(tileAtOrigin));
+    }
+
+    @Test
     public void testPlace() {
         BeanWorld world = WorldBuilder.empty();
         Tile tile = new Dirt(0, 0);

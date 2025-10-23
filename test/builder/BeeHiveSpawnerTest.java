@@ -294,12 +294,12 @@ public class BeeHiveSpawnerTest {
     
     /**
      * Additional test to verify timer state changes with tick calls
-     * Covers removal of timer.tick() mutation (line 29)
+     * Covers removal of timer.tick() mutation (line 39)
      * This test verifies that timer.tick() causes the timer to finish
      */
     @Test
     public void testTimerStateProgression() {
-        BeeHiveSpawner testSpawner = new BeeHiveSpawner(50, 75, 2);
+        BeeHiveSpawner testSpawner = new BeeHiveSpawner(50, 75, 300);
         TestEngineState engineState = new TestEngineState();
         TestGameState gameState = new TestGameState();
         
@@ -307,21 +307,15 @@ public class BeeHiveSpawnerTest {
         TickTimer timer = testSpawner.getTimer();
         Assert.assertFalse("Timer should not be finished initially", timer.isFinished());
         
-        // Tick once - not finished yet for duration=2
-        testSpawner.tick(engineState, gameState);
-        Assert.assertFalse("Timer should not be finished after 1 tick", timer.isFinished());
+        // Tick 299 times - not finished yet for duration=300
+        for (int i = 0; i < 299; i++) {
+            testSpawner.tick(engineState, gameState);
+        }
+        Assert.assertFalse("Timer should not be finished after 299 ticks", timer.isFinished());
         
-        // Tick again - should be finished now
+        // Tick one more time - should be finished now (300th tick)
         testSpawner.tick(engineState, gameState);
-        boolean wasFinishedAtSomePoint = timer.isFinished();
-        
-        // Tick one more time - RepeatingTimer resets after finishing
-        testSpawner.tick(engineState, gameState);
-        
-        // If timer.tick() was never called, isFinished() would always be false
-        // This verifies the timer actually progressed through states
-        Assert.assertTrue("Timer should have been in finished state at some point", 
-            wasFinishedAtSomePoint || !timer.isFinished());
+        Assert.assertTrue("Timer should be finished after 300 ticks", timer.isFinished());
     }
 
     // Minimal test implementations that focus only on what BeeHiveSpawner needs
