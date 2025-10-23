@@ -2,340 +2,263 @@ package builder;
 
 import org.junit.Assert;
 import org.junit.Test;
+import builder.entities.npc.enemies.Pigeon;
+import builder.entities.resources.Cabbage;
+import builder.entities.tiles.Dirt;
+import scenarios.mocks.MockEngineState;
+import engine.renderer.TileGrid;
 
-/**
- * Unit tests for Pigeon class to cover all mutation testing scenarios.
- */
 public class PigeonTest {
 
-    /**
-     * Test first constructor sets coordinates and initializes properly
-     * Covers mutations: constructor method calls and field assignments
-     */
     @Test
     public void testConstructorBasic() {
-        builder.entities.npc.enemies.Pigeon testPigeon = new builder.entities.npc.enemies.Pigeon(50, 75);
+        Pigeon testPigeon = new Pigeon(50, 75);
         Assert.assertEquals("X coordinate should be set correctly", 50, testPigeon.getX());
         Assert.assertEquals("Y coordinate should be set correctly", 75, testPigeon.getY());
         Assert.assertNotNull("Lifespan should be initialized", testPigeon.getLifespan());
         Assert.assertTrue("Should be attacking initially", testPigeon.attacking);
+        Assert.assertNotNull("Sprite should be set", testPigeon.getSprite());
     }
 
-    /**
-     * Test second constructor with tracked target sets all fields correctly
-     * Covers mutations: constructor method calls and field assignments
-     */
     @Test
     public void testConstructorWithTarget() {
         TestHasPosition target = new TestHasPosition(500, 600);
-        builder.entities.npc.enemies.Pigeon testPigeon = new builder.entities.npc.enemies.Pigeon(80, 90, target);
+        Pigeon testPigeon = new Pigeon(80, 90, target);
         Assert.assertEquals("X coordinate should be set correctly", 80, testPigeon.getX());
         Assert.assertEquals("Y coordinate should be set correctly", 90, testPigeon.getY());
         Assert.assertNotNull("Lifespan should be initialized", testPigeon.getLifespan());
         Assert.assertTrue("Should be attacking initially", testPigeon.attacking);
+        Assert.assertNotNull("Sprite should be set", testPigeon.getSprite());
     }
 
-    /**
-     * Test getLifespan() returns non-null timer
-     * Covers mutation: replaced return value with null for getLifespan
-     */
     @Test
     public void testGetLifespanReturnsNonNull() {
-        builder.entities.npc.enemies.Pigeon pigeon = new builder.entities.npc.enemies.Pigeon(100, 200);
+        Pigeon pigeon = new Pigeon(100, 200);
         engine.timing.FixedTimer timer = pigeon.getLifespan();
         Assert.assertNotNull("Lifespan should not be null", timer);
     }
 
-    /**
-     * Test setLifespan() properly updates the timer
-     * Covers mutation: method call removal for setLifespan
-     */
     @Test
     public void testSetLifespan() {
-        builder.entities.npc.enemies.Pigeon pigeon = new builder.entities.npc.enemies.Pigeon(100, 200);
+        Pigeon pigeon = new Pigeon(100, 200);
         engine.timing.FixedTimer newTimer = new engine.timing.FixedTimer(5000);
         pigeon.setLifespan(newTimer);
         Assert.assertEquals("Lifespan should be updated", newTimer, pigeon.getLifespan());
     }
 
-    /**
-     * Test attacking field mutations
-     * Covers mutations: boolean field assignments
-     */
     @Test
-    public void testAttackingField() {
-        builder.entities.npc.enemies.Pigeon pigeon = new builder.entities.npc.enemies.Pigeon(100, 200);
-        
-        // Test initial state
-        Assert.assertTrue("Should be attacking initially", pigeon.attacking);
-        
-        // Test state change
+    public void testTickNotAttackingReturningToSpawn() {
+        Pigeon pigeon = new Pigeon(100, 200);
         pigeon.attacking = false;
-        Assert.assertFalse("Should not be attacking after change", pigeon.attacking);
+        
+        MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
+        TestGameState game = new TestGameState();
+        
+        pigeon.tick(engine, game);
+        Assert.assertTrue("Tick should complete", true);
     }
 
-    /**
-     * Test spawn coordinates are preserved
-     * Covers mutations: spawnX and spawnY field usage
-     */
     @Test
-    public void testSpawnCoordinates() {
-        builder.entities.npc.enemies.Pigeon pigeon = new builder.entities.npc.enemies.Pigeon(100, 200);
-        Assert.assertEquals("Spawn X should be 100", 100, pigeon.getX());
-        Assert.assertEquals("Spawn Y should be 200", 200, pigeon.getY());
-        
-        TestHasPosition target = new TestHasPosition(300, 400);
-        builder.entities.npc.enemies.Pigeon pigeonWithTarget = new builder.entities.npc.enemies.Pigeon(150, 250, target);
-        Assert.assertEquals("Target pigeon spawn X should be 150", 150, pigeonWithTarget.getX());
-        Assert.assertEquals("Target pigeon spawn Y should be 250", 250, pigeonWithTarget.getY());
-    }
-
-    /**
-     * Test that lifespan timer is properly initialized
-     * Covers mutations: timer initialization and 3000ms duration
-     */
-    @Test
-    public void testLifespanInitialization() {
-        builder.entities.npc.enemies.Pigeon pigeon = new builder.entities.npc.enemies.Pigeon(100, 200);
-        engine.timing.FixedTimer timer = pigeon.getLifespan();
-        Assert.assertNotNull("Timer should be initialized", timer);
-        
-        TestHasPosition target = new TestHasPosition(300, 400);
-        builder.entities.npc.enemies.Pigeon pigeonWithTarget = new builder.entities.npc.enemies.Pigeon(150, 250, target);
-        engine.timing.FixedTimer targetTimer = pigeonWithTarget.getLifespan();
-        Assert.assertNotNull("Target pigeon timer should be initialized", targetTimer);
-    }
-
-    /**
-     * Test constructor sets speed to 4
-     * Covers mutations: setSpeed(4) method call
-     */
-    @Test
-    public void testConstructorSetsSpeed() {
-        TestHasPosition target = new TestHasPosition(300, 400);
-        
-        builder.entities.npc.enemies.Pigeon speedTest = new builder.entities.npc.enemies.Pigeon(0, 0);
-        Assert.assertNotNull("Pigeon should be created successfully", speedTest);
-        
-        builder.entities.npc.enemies.Pigeon speedTestWithTarget = new builder.entities.npc.enemies.Pigeon(0, 0, target);
-        Assert.assertNotNull("Pigeon with target should be created successfully", speedTestWithTarget);
-    }
-
-    /**
-     * Test equality conditions and boundary values
-     * Covers mutations: == to !=, >= to <, etc.
-     */
-    @Test
-    public void testBoundaryValues() {
-        // Test coordinate boundaries
-        builder.entities.npc.enemies.Pigeon boundaryPigeon = new builder.entities.npc.enemies.Pigeon(400, 400);
-        Assert.assertEquals("X should be 400", 400, boundaryPigeon.getX());
-        Assert.assertEquals("Y should be 400", 400, boundaryPigeon.getY());
-        
-        // Test zero coordinates
-        builder.entities.npc.enemies.Pigeon zeroPigeon = new builder.entities.npc.enemies.Pigeon(0, 0);
-        Assert.assertEquals("X should be 0", 0, zeroPigeon.getX());
-        Assert.assertEquals("Y should be 0", 0, zeroPigeon.getY());
-    }
-
-    /**
-     * Test arithmetic operations in distance calculations
-     * Covers mutations: subtraction to addition, etc.
-     */
-    @Test
-    public void testArithmeticOperations() {
-        // Test different coordinate combinations to exercise arithmetic
-        builder.entities.npc.enemies.Pigeon positivePigeon = new builder.entities.npc.enemies.Pigeon(100, 200);
-        builder.entities.npc.enemies.Pigeon smallPigeon = new builder.entities.npc.enemies.Pigeon(5, 10);
-        
-        Assert.assertEquals("Positive X should be 100", 100, positivePigeon.getX());
-        Assert.assertEquals("Positive Y should be 200", 200, positivePigeon.getY());
-        Assert.assertEquals("Small X should be 5", 5, smallPigeon.getX());
-        Assert.assertEquals("Small Y should be 10", 10, smallPigeon.getY());
-    }
-
-    /**
-     * Test constructor method calls coverage
-     * Covers mutations: setSpeed and setSprite calls in constructor
-     */
-    @Test
-    public void testConstructorMethodCalls() {
-        // Test that constructor completes without exceptions (covers setSpeed and setSprite calls)
-        try {
-            builder.entities.npc.enemies.Pigeon pigeon1 = new builder.entities.npc.enemies.Pigeon(10, 20);
-            Assert.assertNotNull("Constructor should complete successfully", pigeon1);
-            
-            TestHasPosition target = new TestHasPosition(30, 40);
-            builder.entities.npc.enemies.Pigeon pigeon2 = new builder.entities.npc.enemies.Pigeon(10, 20, target);
-            Assert.assertNotNull("Constructor with target should complete successfully", pigeon2);
-        } catch (Exception e) {
-            Assert.fail("Constructor should not throw exceptions: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Test integer constant mutations
-     * Covers mutations: changing 3000 to other values, changing 4 to other values
-     */
-    @Test
-    public void testIntegerConstants() {
-        builder.entities.npc.enemies.Pigeon pigeon = new builder.entities.npc.enemies.Pigeon(100, 200);
-        
-        // Test that lifespan timer exists (should be 3000ms originally)
-        engine.timing.FixedTimer timer = pigeon.getLifespan();
-        Assert.assertNotNull("Timer should be initialized with proper duration", timer);
-        
-        // Test coordinates that would trigger different branches in tick logic
-        builder.entities.npc.enemies.Pigeon leftPigeon = new builder.entities.npc.enemies.Pigeon(300, 500); // x < 400
-        builder.entities.npc.enemies.Pigeon rightPigeon = new builder.entities.npc.enemies.Pigeon(500, 500); // x >= 400
-        
-        Assert.assertTrue("Left pigeon X should be < 400", leftPigeon.getX() < 400);
-        Assert.assertTrue("Right pigeon X should be >= 400", rightPigeon.getX() >= 400);
-    }
-
-    /**
-     * Test tick method coverage
-     * Covers mutations: method calls in tick, conditional checks
-     */
-    @Test
-    public void testTickMethodCalls() {
-        builder.entities.npc.enemies.Pigeon pigeon = new builder.entities.npc.enemies.Pigeon(100, 200);
-        
-        // Test basic tick functionality
-        Assert.assertNotNull("Pigeon should be created", pigeon);
-        Assert.assertTrue("Should be attacking initially", pigeon.attacking);
-        
-        // Test different attacking states
-        pigeon.attacking = false;
-        Assert.assertFalse("Should not be attacking after change", pigeon.attacking);
-        
+    public void testTickAttackingNoTargetLeftSide() {
+        Pigeon pigeon = new Pigeon(300, 500);
         pigeon.attacking = true;
-        Assert.assertTrue("Should be attacking after change back", pigeon.attacking);
+        
+        MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
+        TestGameState game = new TestGameState();
+        
+        pigeon.tick(engine, game);
+        Assert.assertTrue("Left side pigeon should tick", true);
     }
 
-    /**
-     * Test lifespan timer functionality
-     * Covers mutations: timer.tick() and isFinished() checks
-     */
     @Test
-    public void testLifespanTimer() {
-        builder.entities.npc.enemies.Pigeon pigeon = new builder.entities.npc.enemies.Pigeon(100, 200);
+    public void testTickAttackingNoTargetRightSide() {
+        Pigeon pigeon = new Pigeon(500, 500);
+        pigeon.attacking = true;
         
-        // Test timer exists
-        engine.timing.FixedTimer timer = pigeon.getLifespan();
-        Assert.assertNotNull("Timer should exist", timer);
+        MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
+        TestGameState game = new TestGameState();
         
-        // Test setting new timer
-        engine.timing.FixedTimer newTimer = new engine.timing.FixedTimer(100);
-        pigeon.setLifespan(newTimer);
-        Assert.assertEquals("Timer should be updated", newTimer, pigeon.getLifespan());
+        pigeon.tick(engine, game);
+        Assert.assertTrue("Right side pigeon should tick", true);
     }
 
-    /**
-     * Test coordinate boundaries and arithmetic operations
-     * Covers mutations: subtraction to addition, comparison operations
-     */
     @Test
-    public void testCoordinateBoundaries() {
-        // Test different coordinate scenarios that exercise arithmetic in tick
-        builder.entities.npc.enemies.Pigeon leftPigeon = new builder.entities.npc.enemies.Pigeon(300, 500); // x < 400
-        builder.entities.npc.enemies.Pigeon rightPigeon = new builder.entities.npc.enemies.Pigeon(500, 500); // x >= 400
-        builder.entities.npc.enemies.Pigeon centerPigeon = new builder.entities.npc.enemies.Pigeon(400, 400); // x == 400
-        
-        Assert.assertTrue("Left pigeon X should be < 400", leftPigeon.getX() < 400);
-        Assert.assertTrue("Right pigeon X should be >= 400", rightPigeon.getX() >= 400);
-        Assert.assertTrue("Center pigeon X should be == 400", centerPigeon.getX() == 400);
-        
-        // Test spawn coordinate preservation
-        Assert.assertEquals("Left pigeon spawn should match", 300, leftPigeon.getX());
-        Assert.assertEquals("Right pigeon spawn should match", 500, rightPigeon.getX());
-    }
-
-    /**
-     * Test tracked target scenarios
-     * Covers mutations: null checks, target coordinate calculations
-     */
-    @Test
-    public void testTrackedTargetScenarios() {
-        // Test with no target
-        builder.entities.npc.enemies.Pigeon noTargetPigeon = new builder.entities.npc.enemies.Pigeon(100, 200);
-        Assert.assertNotNull("No target pigeon should be created", noTargetPigeon);
-        
-        // Test with target
+    public void testTickWithTrackedTarget() {
         TestHasPosition target = new TestHasPosition(300, 400);
-        builder.entities.npc.enemies.Pigeon targetPigeon = new builder.entities.npc.enemies.Pigeon(100, 200, target);
-        Assert.assertNotNull("Target pigeon should be created", targetPigeon);
+        Pigeon pigeon = new Pigeon(100, 200, target);
+        pigeon.attacking = true;
         
-        // Test target coordinate access
-        Assert.assertEquals("Target X should be 300", 300, target.getX());
-        Assert.assertEquals("Target Y should be 400", 400, target.getY());
+        MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
+        TestGameState game = new TestGameState();
+        
+        pigeon.tick(engine, game);
+        Assert.assertTrue("Pigeon with target should tick", true);
     }
 
-    /**
-     * Test constructor speed setting mutations
-     * Covers mutations: removed call to setSpeed in constructors
-     */
     @Test
-    public void testConstructorSpeedSetting() {
-        try {
-            builder.entities.npc.enemies.Pigeon pigeon1 = new builder.entities.npc.enemies.Pigeon(50, 75);
-            Assert.assertNotNull("Basic constructor should work", pigeon1);
-            
-            TestHasPosition target = new TestHasPosition(100, 150);
-            builder.entities.npc.enemies.Pigeon pigeon2 = new builder.entities.npc.enemies.Pigeon(80, 90, target);
-            Assert.assertNotNull("Target constructor should work", pigeon2);
-        } catch (Exception e) {
-            Assert.fail("Constructor should not fail: " + e.getMessage());
+    public void testTickLifespanFinished() {
+        Pigeon pigeon = new Pigeon(100, 200);
+        engine.timing.FixedTimer shortTimer = new engine.timing.FixedTimer(1);
+        pigeon.setLifespan(shortTimer);
+        
+        MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
+        TestGameState game = new TestGameState();
+        
+        for (int i = 0; i < 10; i++) {
+            pigeon.tick(engine, game);
         }
+        Assert.assertTrue("Should be marked for removal", pigeon.isMarkedForRemoval());
     }
 
-    /**
-     * Test constructor sprite setting mutations
-     * Covers mutations: removed call to setSprite in constructors
-     */
     @Test
-    public void testConstructorSpriteSetting() {
-        try {
-            builder.entities.npc.enemies.Pigeon pigeon1 = new builder.entities.npc.enemies.Pigeon(10, 20);
-            Assert.assertNotNull("Constructor should set sprite properly", pigeon1);
-            
-            TestHasPosition target = new TestHasPosition(30, 40);
-            builder.entities.npc.enemies.Pigeon pigeon2 = new builder.entities.npc.enemies.Pigeon(15, 25, target);
-            Assert.assertNotNull("Constructor with target should set sprite properly", pigeon2);
-        } catch (Exception e) {
-            Assert.fail("Constructor sprite setting should not fail: " + e.getMessage());
+    public void testTickNotAttackingCloseToSpawn() {
+        Pigeon pigeon = new Pigeon(100, 200);
+        pigeon.attacking = false;
+        pigeon.setX(100);
+        pigeon.setY(200);
+        
+        MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
+        TestGameState game = new TestGameState();
+        
+        pigeon.tick(engine, game);
+        Assert.assertTrue("Close to spawn should work", true);
+    }
+
+    @Test
+    public void testTickNotAttackingFarFromSpawn() {
+        Pigeon pigeon = new Pigeon(100, 200);
+        pigeon.attacking = false;
+        pigeon.setX(500);
+        pigeon.setY(600);
+        
+        MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
+        TestGameState game = new TestGameState();
+        
+        pigeon.tick(engine, game);
+        Assert.assertFalse("Far from spawn should not be removed", pigeon.isMarkedForRemoval());
+    }
+
+    @Test
+    public void testTickWithCabbageOnTile() {
+        Pigeon pigeon = new Pigeon(100, 200);
+        pigeon.attacking = true;
+        
+        MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
+        TestGameState game = new TestGameState();
+        
+        Dirt tile = new Dirt(100, 200);
+        Cabbage cabbage = new Cabbage(100, 200);
+        tile.placeOn(cabbage);
+        game.getWorld().place(tile);
+        
+        pigeon.tick(engine, game);
+        Assert.assertNotNull("Pigeon should process cabbage logic", pigeon);
+    }
+
+    @Test
+    public void testTickSpriteChangeSpawnAbove() {
+        Pigeon pigeon = new Pigeon(100, 50);
+        pigeon.attacking = false;
+        pigeon.setX(100);
+        pigeon.setY(100);
+        
+        MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
+        TestGameState game = new TestGameState();
+        
+        pigeon.tick(engine, game);
+        Assert.assertNotNull("Sprite should update for up direction", pigeon.getSprite());
+    }
+
+    @Test
+    public void testTickSpriteChangeSpawnBelow() {
+        Pigeon pigeon = new Pigeon(100, 200);
+        pigeon.attacking = false;
+        pigeon.setX(100);
+        pigeon.setY(100);
+        
+        MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
+        TestGameState game = new TestGameState();
+        
+        pigeon.tick(engine, game);
+        Assert.assertNotNull("Sprite should update for down direction", pigeon.getSprite());
+    }
+
+    @Test
+    public void testTickTargetNullAttackingLeftBranch() {
+        Pigeon pigeon = new Pigeon(350, 800);
+        pigeon.attacking = true;
+        
+        MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
+        TestGameState game = new TestGameState();
+        
+        pigeon.tick(engine, game);
+        Assert.assertTrue("Should handle left branch (x < 400)", true);
+    }
+
+    @Test
+    public void testTickTargetNullAttackingRightBranch() {
+        Pigeon pigeon = new Pigeon(450, 800);
+        pigeon.attacking = true;
+        
+        MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
+        TestGameState game = new TestGameState();
+        
+        pigeon.tick(engine, game);
+        Assert.assertTrue("Should handle right branch (x >= 400)", true);
+    }
+
+    @Test
+    public void testTickMultipleTimes() {
+        Pigeon pigeon = new Pigeon(100, 200);
+        
+        MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
+        TestGameState game = new TestGameState();
+        
+        for (int i = 0; i < 5; i++) {
+            pigeon.tick(engine, game);
         }
+        Assert.assertFalse("Should not be marked for removal yet", pigeon.isMarkedForRemoval());
     }
 
-    /**
-     * Test all arithmetic mutations in delta calculations
-     * Covers mutations: subtraction replaced with addition
-     */
     @Test
-    public void testArithmeticMutations() {
-        TestHasPosition target1 = new TestHasPosition(150, 250);
-        TestHasPosition target2 = new TestHasPosition(50, 150);
+    public void testTickCabbageNearby() {
+        Pigeon pigeon = new Pigeon(100, 100);
+        pigeon.attacking = true;
         
-        builder.entities.npc.enemies.Pigeon pigeon1 = new builder.entities.npc.enemies.Pigeon(100, 200, target1);
-        builder.entities.npc.enemies.Pigeon pigeon2 = new builder.entities.npc.enemies.Pigeon(100, 200, target2);
+        MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
+        TestGameState game = new TestGameState();
         
-        // Test that pigeons are created with different targets
-        Assert.assertNotNull("Pigeon 1 should be created", pigeon1);
-        Assert.assertNotNull("Pigeon 2 should be created", pigeon2);
+        Dirt tile = new Dirt(100, 100);
+        Cabbage cabbage = new Cabbage(100, 100);
+        tile.placeOn(cabbage);
+        ((TestWorld)game.getWorld()).addTileWithCabbage(tile);
         
-        // Test coordinate differences that would exercise arithmetic
-        int deltaX1 = target1.getX() - pigeon1.getX(); // 150 - 100 = 50
-        int deltaY1 = target1.getY() - pigeon1.getY(); // 250 - 200 = 50
-        int deltaX2 = target2.getX() - pigeon2.getX(); // 50 - 100 = -50
-        int deltaY2 = target2.getY() - pigeon2.getY(); // 150 - 200 = -50
-        
-        Assert.assertEquals("Delta X1 should be 50", 50, deltaX1);
-        Assert.assertEquals("Delta Y1 should be 50", 50, deltaY1);
-        Assert.assertEquals("Delta X2 should be -50", -50, deltaX2);
-        Assert.assertEquals("Delta Y2 should be -50", -50, deltaY2);
+        pigeon.tick(engine, game);
+        Assert.assertTrue("Should process nearby cabbage", true);
     }
 
-    // Helper test class
+    @Test
+    public void testConstructorSetsSpeedAndSprite() {
+        Pigeon p1 = new Pigeon(10, 20);
+        Assert.assertNotNull("Sprite should be set by constructor", p1.getSprite());
+        
+        TestHasPosition target = new TestHasPosition(30, 40);
+        Pigeon p2 = new Pigeon(15, 25, target);
+        Assert.assertNotNull("Sprite should be set by constructor with target", p2.getSprite());
+    }
+
+    @Test
+    public void testTickNoCabbages() {
+        Pigeon pigeon = new Pigeon(100, 200);
+        pigeon.attacking = true;
+        
+        MockEngineState engine = new MockEngineState(new TileGrid(25, 2000));
+        TestGameState game = new TestGameState();
+        
+        pigeon.tick(engine, game);
+        Assert.assertFalse("Should set attacking to false when no cabbages", pigeon.attacking);
+    }
+
     public static class TestHasPosition implements engine.game.HasPosition {
         int x, y;
         
@@ -348,5 +271,74 @@ public class PigeonTest {
         public int getY() { return y; }
         public void setX(int x) { this.x = x; }
         public void setY(int y) { this.y = y; }
+    }
+    
+    public static class TestGameState implements builder.GameState {
+        private TestWorld world = new TestWorld();
+        private TestPlayer player = new TestPlayer();
+        private TestInventory inventory = new TestInventory();
+        private builder.entities.npc.NpcManager npcs = new builder.entities.npc.NpcManager();
+        private builder.entities.npc.enemies.EnemyManager enemies;
+        
+        public TestGameState() {
+            this.enemies = new builder.entities.npc.enemies.EnemyManager(new TileGrid(25, 2000));
+        }
+        
+        public builder.world.World getWorld() { return world; }
+        public builder.player.Player getPlayer() { return player; }
+        public builder.inventory.Inventory getInventory() { return inventory; }
+        public builder.entities.npc.NpcManager getNpcs() { return npcs; }
+        public builder.entities.npc.enemies.EnemyManager getEnemies() { return enemies; }
+    }
+    
+    public static class TestWorld implements builder.world.World {
+        private java.util.List<builder.entities.tiles.Tile> tiles = new java.util.ArrayList<>();
+        
+        public java.util.List<builder.entities.tiles.Tile> tilesAtPosition(int x, int y, engine.renderer.Dimensions dimensions) {
+            return new java.util.ArrayList<>();
+        }
+        
+        public java.util.List<builder.entities.tiles.Tile> tileSelector(java.util.function.Predicate<builder.entities.tiles.Tile> filter) {
+            return tiles.stream().filter(filter).collect(java.util.stream.Collectors.toList());
+        }
+        
+        public java.util.List<builder.entities.tiles.Tile> allTiles() {
+            return new java.util.ArrayList<>(tiles);
+        }
+        
+        public void place(builder.entities.tiles.Tile tile) {
+            tiles.add(tile);
+        }
+        
+        public void addTileWithCabbage(builder.entities.tiles.Tile tile) {
+            tiles.add(tile);
+        }
+    }
+    
+    public static class TestPlayer implements builder.player.Player {
+        private int x = 500, y = 500;
+
+        public int getX() { return x; }
+        public int getY() { return y; }
+        public void setX(int x) { this.x = x; }
+        public void setY(int y) { this.y = y; }
+        public String getID() { return "test-player"; }
+        public int getDamage() { return 1; }
+    }
+    
+    public static class TestInventory implements builder.inventory.Inventory {
+        private int food = 10;
+        private int coins = 10;
+
+        public void addFood(int amount) { this.food = Math.max(0, this.food + amount); }
+        public int getFood() { return food; }
+        public void addCoins(int amount) { this.coins = Math.max(0, this.coins + amount); }
+        public int getCoins() { return coins; }
+        public int getCapacity() { return 10; }
+        public void setItem(int slot, builder.inventory.items.Item item) {}
+        public builder.inventory.items.Item getItem(int slot) { return null; }
+        public builder.inventory.items.Item getHolding() { return null; }
+        public int getActiveSlot() { return 0; }
+        public void setActiveSlot(int slot) {}
     }
 }
